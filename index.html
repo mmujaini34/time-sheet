@@ -365,10 +365,11 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
 
 
 
+
 <script>
-/* ===== v7 ITEMS FIX - USE ORIGINAL SAVED ROWS, PDF UNCHANGED ===== */
+/* ===== v8 ITEMS + PDF CAPTURE FIX - PDF SHAPE UNCHANGED ===== */
 (function(){
-  const CATALOG = [
+  const CATALOG_V8 = [
     {desc:"UNI-LOK PRESSURE BLOCK ASSY 5000PSI", part:"ULK55-04", serialRequired:true},
     {desc:"UNI-LOK PRESSURE BLOCK ASSY 5000PSI", part:"ULK55-02", serialRequired:true},
     {desc:"PKR FEEDTHRU TRU-LOK FA 120#2 OR 4FL", part:"SPT120-F99-F99", serialRequired:true},
@@ -380,55 +381,89 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
     {desc:"TRU-LOK SURF CONN C1D2 SD", part:"TLK5302-CD2", serialRequired:true},
     {desc:"BRACKET", part:"P152-0301", serialRequired:false}
   ];
-  const MANUAL_VALUE = "A400-0405 REV";
+  const IM_VALUE_V8 = "A400-0405 REV";
 
   function esc(v){
     return String(v ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
   }
-  function ensureArrays(){
-    if(!Array.isArray(window.savedItemRows)) window.savedItemRows = [];
-    if(!Array.isArray(window.draftItemRows)) window.draftItemRows = [];
-  }
-  function copyRows(rows){
-    return (rows || []).map(r => ({...r}));
-  }
-  function blankRow(){
-    return {manualMode:false,savedIndex:"",qty:"",desc:"",part:"",manual:"",serial:"",serialRequired:true};
-  }
-  function normalizeSerial(raw){
+  function normalizeSerialV8(raw){
     const digits = String(raw || "").replace(/\D/g,"").slice(0,12);
     return digits.length > 6 ? digits.slice(0,6) + "/" + digits.slice(6) : digits;
   }
-  function validSerial(v){
+  function validSerialV8(v){
     v = String(v || "").trim();
     return /^\d{6}$/.test(v) || /^\d{6}\/\d{6}$/.test(v);
   }
-  function serialState(row){
+  function blankItemV8(){
+    return {manualMode:false,savedIndex:"",qty:"",desc:"",part:"",manual:"",serial:"",serialRequired:true};
+  }
+  function getSavedRowsV8(){
+    try{
+      if(!Array.isArray(savedItemRows)) savedItemRows = [];
+      return savedItemRows;
+    }catch(e){
+      window.savedItemRows = window.savedItemRows || [];
+      return window.savedItemRows;
+    }
+  }
+  function setSavedRowsV8(rows){
+    try{
+      savedItemRows = rows;
+    }catch(e){
+      window.savedItemRows = rows;
+    }
+  }
+  function getDraftRowsV8(){
+    try{
+      if(!Array.isArray(draftItemRows)) draftItemRows = [];
+      return draftItemRows;
+    }catch(e){
+      window.draftItemRows = window.draftItemRows || [];
+      return window.draftItemRows;
+    }
+  }
+  function setDraftRowsV8(rows){
+    try{
+      draftItemRows = rows;
+    }catch(e){
+      window.draftItemRows = rows;
+    }
+  }
+  function copyRowsV8(rows){
+    return (rows || []).map(r => ({...r}));
+  }
+  function serialStateV8(row){
     if(row.serialRequired === false) return {cls:"serial-status-ok", text:"N/A"};
     const v = String(row.serial || "").trim();
     if(!v) return {cls:"serial-status-warn", text:"Enter 6 digits. For two serials, enter 12 digits."};
-    if(validSerial(v)) return {cls:"serial-status-ok", text:"تم"};
+    if(validSerialV8(v)) return {cls:"serial-status-ok", text:"تم"};
     return {cls:"serial-status-error", text:"Serial Number must be 6 digits, or 12 digits for two serials."};
   }
 
   window.openItemsModal = function(){
-    ensureArrays();
-    window.draftItemRows = copyRows(window.savedItemRows);
-    if(!window.draftItemRows.length) window.draftItemRows = [blankRow()];
+    const saved = getSavedRowsV8();
+    let draft = copyRowsV8(saved);
+    if(!draft.length) draft = [blankItemV8()];
+    setDraftRowsV8(draft);
     renderItemEditorRows();
     const modal = document.getElementById("itemsModal");
     if(modal) modal.classList.add("active");
   };
 
   window.renderItemEditorRows = function(){
-    ensureArrays();
+    let draft = getDraftRowsV8();
+    if(!draft.length){
+      draft = [blankItemV8()];
+      setDraftRowsV8(draft);
+    }
     const editor = document.getElementById("itemsEditor");
     if(!editor) return;
-    if(!window.draftItemRows.length) window.draftItemRows = [blankRow()];
-    editor.innerHTML = window.draftItemRows.map((row, index) => {
-      row.serialRequired = row.serialRequired !== false;
+
+    editor.innerHTML = draft.map((row, index) => {
       const manual = !!row.manualMode;
-      const state = serialState(row);
+      if(row.serialRequired !== false) row.serialRequired = true;
+      const state = serialStateV8(row);
+
       return `
       <div class="item-editor-row" data-index="${index}">
         <div class="item-row-top">
@@ -437,30 +472,30 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
         </div>
 
         <label class="item-mode-line">
-          <input type="checkbox" ${manual ? "checked" : ""} onchange="updateDraftItemV7(${index}, 'manualMode', this.checked)">
+          <input type="checkbox" ${manual ? "checked" : ""} onchange="updateDraftItemV8(${index}, 'manualMode', this.checked)">
           Manual Entry for item not saved
         </label>
 
         <div class="item-row-grid ${manual ? "manual-mode" : ""}">
           <div class="item-mini-field">
             <label>Quantity</label>
-            <input type="number" min="1" inputmode="numeric" value="${esc(row.qty || "")}" oninput="updateDraftItemV7(${index}, 'qty', this.value)" placeholder="1">
+            <input type="number" min="1" inputmode="numeric" value="${esc(row.qty || "")}" oninput="updateDraftItemV8(${index}, 'qty', this.value)" placeholder="1">
           </div>
 
           <div class="item-mini-field">
             <label>${manual ? "Description" : "Search Description"}</label>
             ${manual ? `
-              <input value="${esc(row.desc || "")}" oninput="updateDraftItemV7(${index}, 'desc', this.value)" placeholder="Type Description">
+              <input value="${esc(row.desc || "")}" oninput="updateDraftItemV8(${index}, 'desc', this.value)" placeholder="Type Description">
             ` : `
-              <input value="${esc(row.desc || "")}" oninput="searchDescriptionV7(${index}, this.value)" onfocus="searchDescriptionV7(${index}, this.value)" placeholder="Type Description">
-              <div id="itemResultsV7_${index}" class="item-results-box"></div>
+              <input value="${esc(row.desc || "")}" oninput="searchDescriptionV8(${index}, this.value)" onfocus="searchDescriptionV8(${index}, this.value)" placeholder="Type Description">
+              <div id="itemResultsV8_${index}" class="item-results-box"></div>
               <div class="item-part-card">${row.part ? "Part Number: " + esc(row.part) : "Part Number will appear here"}</div>
             `}
           </div>
 
           <div class="item-mini-field">
             <label>Part Number</label>
-            <input class="${manual ? "" : "auto-readonly"}" value="${esc(row.part || "")}" ${manual ? `oninput="updateDraftItemV7(${index}, 'part', this.value)"` : "readonly"} placeholder="Part Number">
+            <input class="${manual ? "" : "auto-readonly"}" value="${esc(row.part || "")}" ${manual ? `oninput="updateDraftItemV8(${index}, 'part', this.value)"` : "readonly"} placeholder="Part Number">
           </div>
 
           <div class="item-mini-field">
@@ -469,7 +504,7 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
               <input class="auto-readonly" value="N/A" readonly>
               <div class="serial-status-ok">N/A</div>
             ` : `
-              <input inputmode="numeric" pattern="[0-9/]*" value="${esc(row.serial || "")}" oninput="updateSerialV7(${index}, this.value)" placeholder="123456 or 123456/654321">
+              <input inputmode="numeric" pattern="[0-9/]*" value="${esc(row.serial || "")}" oninput="updateSerialV8(${index}, this.value)" placeholder="123456 or 123456/654321">
               <div class="${state.cls}">${state.text}</div>
             `}
           </div>
@@ -478,23 +513,26 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
     }).join("");
   };
 
-  window.searchDescriptionV7 = function(index, value){
-    ensureArrays();
-    const row = window.draftItemRows[index];
+  window.searchDescriptionV8 = function(index, value){
+    const draft = getDraftRowsV8();
+    const row = draft[index];
     if(!row) return;
     row.desc = value;
     row.part = "";
     row.savedIndex = "";
     row.serialRequired = true;
     row.serial = "";
-    const box = document.getElementById("itemResultsV7_" + index);
+
+    const box = document.getElementById("itemResultsV8_" + index);
     if(!box) return;
+
     const q = String(value || "").trim().toLowerCase();
     const results = q
-      ? CATALOG.filter(x => x.desc.toLowerCase().includes(q) || x.part.toLowerCase().includes(q))
-      : CATALOG;
-    box.innerHTML = results.map((x) => `
-      <button class="item-result-btn" type="button" onclick="selectCatalogItemV7(${index}, '${esc(x.part)}')">
+      ? CATALOG_V8.filter(x => x.desc.toLowerCase().includes(q) || x.part.toLowerCase().includes(q))
+      : CATALOG_V8;
+
+    box.innerHTML = results.map(x => `
+      <button class="item-result-btn" type="button" onclick="selectCatalogItemV8(${index}, '${esc(x.part)}')">
         <span class="item-result-desc">${esc(x.desc)}</span>
         <span class="item-result-pn">${esc(x.part)}</span>
       </button>
@@ -502,28 +540,32 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
     box.classList.toggle("active", results.length > 0);
   };
 
-  window.selectCatalogItemV7 = function(index, part){
-    ensureArrays();
-    const item = CATALOG.find(x => x.part === part);
-    if(!item || !window.draftItemRows[index]) return;
-    const catalogIndex = CATALOG.findIndex(x => x.part === part);
-    window.draftItemRows[index] = {
-      ...window.draftItemRows[index],
+  window.selectCatalogItemV8 = function(index, part){
+    const item = CATALOG_V8.find(x => x.part === part);
+    const draft = getDraftRowsV8();
+    if(!item || !draft[index]) return;
+
+    const catalogIndex = CATALOG_V8.findIndex(x => x.part === part);
+    draft[index] = {
+      ...draft[index],
       manualMode:false,
       savedIndex:String(catalogIndex),
+      qty:draft[index].qty || "",
       desc:item.desc,
       part:item.part,
       manual:"",
       serialRequired:!!item.serialRequired,
       serial:item.serialRequired ? "" : "N/A"
     };
+    setDraftRowsV8(draft);
     renderItemEditorRows();
   };
 
-  window.updateDraftItemV7 = function(index, field, value){
-    ensureArrays();
-    const row = window.draftItemRows[index];
+  window.updateDraftItemV8 = function(index, field, value){
+    const draft = getDraftRowsV8();
+    const row = draft[index];
     if(!row) return;
+
     if(field === "manualMode"){
       row.manualMode = !!value;
       row.savedIndex = "";
@@ -534,18 +576,23 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
         row.part = "";
         row.serial = "";
       }
+      setDraftRowsV8(draft);
       renderItemEditorRows();
       return;
     }
+
     row[field] = value;
+    setDraftRowsV8(draft);
   };
 
-  window.updateSerialV7 = function(index, value){
-    ensureArrays();
-    const row = window.draftItemRows[index];
+  window.updateSerialV8 = function(index, value){
+    const draft = getDraftRowsV8();
+    const row = draft[index];
     if(!row) return;
-    row.serial = normalizeSerial(value);
+    row.serial = normalizeSerialV8(value);
+    setDraftRowsV8(draft);
     renderItemEditorRows();
+
     const input = document.querySelector(`.item-editor-row[data-index="${index}"] input[placeholder*="123456"]`);
     if(input){
       input.focus();
@@ -555,21 +602,23 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
   };
 
   window.addItemEditorRow = function(){
-    ensureArrays();
-    window.draftItemRows.push(blankRow());
+    const draft = getDraftRowsV8();
+    draft.push(blankItemV8());
+    setDraftRowsV8(draft);
     renderItemEditorRows();
   };
 
   window.removeItemEditorRow = function(index){
-    ensureArrays();
-    window.draftItemRows.splice(index,1);
-    if(!window.draftItemRows.length) window.draftItemRows = [blankRow()];
+    let draft = getDraftRowsV8();
+    draft.splice(index, 1);
+    if(!draft.length) draft = [blankItemV8()];
+    setDraftRowsV8(draft);
     renderItemEditorRows();
   };
 
   window.saveItemsSelection = function(){
-    ensureArrays();
-    const normalized = window.draftItemRows.map((row, index) => {
+    const draft = getDraftRowsV8();
+    const normalized = draft.map((row, index) => {
       const empty = !String(row.qty||"").trim() && !String(row.desc||"").trim() && !String(row.part||"").trim() && !String(row.serial||"").trim();
       if(empty) return null;
       const serialRequired = row.serialRequired !== false;
@@ -579,7 +628,7 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
         qty:String(row.qty || "").trim() || "1",
         desc:String(row.desc || "").trim(),
         part:String(row.part || "").trim(),
-        manual:index === 0 ? MANUAL_VALUE : "",
+        manual:index === 0 ? IM_VALUE_V8 : "",
         serial:serialRequired ? String(row.serial || "").trim() : "N/A",
         serialRequired:serialRequired
       };
@@ -591,13 +640,13 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
         alert("Item " + (i+1) + ": Quantity, Description, and Part Number are required.");
         return;
       }
-      if(row.serialRequired && !validSerial(row.serial)){
+      if(row.serialRequired && !validSerialV8(row.serial)){
         alert("Item " + (i+1) + ": Serial Number must be 6 digits, or 12 digits for two serials.");
         return;
       }
     }
 
-    window.savedItemRows = normalized;
+    setSavedRowsV8(normalized);
     updateItemsDisplay();
     if(typeof updateReport === "function") updateReport();
     if(typeof updateItemCounter === "function") updateItemCounter();
@@ -606,40 +655,111 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
   };
 
   window.updateItemsDisplay = function(){
-    ensureArrays();
+    const saved = getSavedRowsV8();
     const display = document.getElementById("itemsDisplay");
     const summary = document.getElementById("itemsSummary");
     if(!display || !summary) return;
-    if(!window.savedItemRows.length){
+
+    if(!saved.length){
       display.classList.add("placeholder");
       display.innerHTML = `<div class="items-display-title">اضغط لإضافة الأغراض</div><div class="items-display-sub">Search by Description. Part Number fills automatically.</div>`;
       summary.textContent = "No items added yet.";
       return;
     }
+
     display.classList.remove("placeholder");
-    display.innerHTML = `<div class="items-display-title">${window.savedItemRows.length} item(s) added</div><div class="items-display-sub">Tap to review or edit items.</div>`;
-    summary.textContent = window.savedItemRows.map((row,i) => {
-      const manual = i === 0 ? MANUAL_VALUE : "";
+    display.innerHTML = `<div class="items-display-title">${saved.length} item(s) added</div><div class="items-display-sub">Tap to review or edit items.</div>`;
+    summary.textContent = saved.map((row,i) => {
+      const manual = i === 0 ? IM_VALUE_V8 : "";
       return `${i+1}. Qty: ${row.qty || "-"} | ${row.desc || "-"} | ${row.part || "-"} | ${manual} | ${row.serial || "-"}`;
     }).join("\n");
   };
 
-  const oldValidate = window.validateBeforePDF;
+  window.clearAllItems = function(){
+    if(!confirm("Clear all Items?")) return;
+    setSavedRowsV8([]);
+    setDraftRowsV8([]);
+    updateItemsDisplay();
+    if(typeof updateReport === "function") updateReport();
+    if(typeof updateItemCounter === "function") updateItemCounter();
+    if(typeof saveTimeSheetDraft === "function") saveTimeSheetDraft();
+  };
+
+  /* Extra validation for item serials */
+  const oldValidateBeforePDF_V8 = window.validateBeforePDF;
   window.validateBeforePDF = function(){
-    if(typeof oldValidate === "function") oldValidate();
-    ensureArrays();
+    if(typeof oldValidateBeforePDF_V8 === "function") oldValidateBeforePDF_V8();
+    const saved = getSavedRowsV8();
     const errors = [];
-    window.savedItemRows.forEach((row,i) => {
-      if(row.serialRequired && !validSerial(row.serial)){
+    saved.forEach((row, i) => {
+      if(row.serialRequired && !validSerialV8(row.serial)){
         errors.push("Item " + (i+1) + ": Serial Number must be 6 digits, or 12 digits for two serials.");
       }
     });
     if(errors.length){
-      const hint = document.getElementById("validationHint");
       const msg = errors.join("\n");
+      const hint = document.getElementById("validationHint");
       if(hint){ hint.textContent = msg; hint.classList.add("active"); }
       alert(msg);
       throw new Error(msg);
+    }
+  };
+
+  function waitFrameV8(){
+    return new Promise(resolve => requestAnimationFrame(resolve));
+  }
+  function waitMsV8(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  async function waitForPdfDomV8(){
+    if(document.fonts && document.fonts.ready){
+      try{ await document.fonts.ready; }catch(e){}
+    }
+    for(let i=0;i<4;i++) await waitFrameV8();
+    await waitMsV8(180);
+  }
+
+  /* Replace createPdfBlob with a safer render wait and guaranteed updateReport before capture */
+  window.createPdfBlob = async function(){
+    if(typeof updateReport === "function") updateReport();
+
+    if(!window.html2canvas || !window.jspdf){
+      throw new Error("PDF libraries are not loaded. Please check your internet connection, then try again.");
+    }
+
+    const report = document.getElementById("reportPage");
+    if(!report) throw new Error("Report page was not found.");
+
+    document.body.classList.add("generating-pdf");
+    if(typeof setStatus === "function") setStatus("Generating PDF...");
+
+    try{
+      if(typeof updateReport === "function") updateReport();
+      report.offsetHeight; // force layout/reflow
+      if(typeof autoFitReport === "function") autoFitReport();
+      report.offsetHeight; // force layout again after autofit
+      await waitForPdfDomV8();
+
+      const canvas = await html2canvas(report,{
+        scale:2,
+        useCORS:true,
+        allowTaint:true,
+        backgroundColor:"#ffffff",
+        logging:false,
+        windowWidth:794,
+        windowHeight:1123,
+        scrollX:0,
+        scrollY:0
+      });
+
+      const imgData = canvas.toDataURL("image/jpeg",1.0);
+      const jsPDF = window.jspdf.jsPDF;
+      const pdf = new jsPDF({orientation:"portrait", unit:"mm", format:"a4", compress:true});
+      pdf.addImage(imgData,"JPEG",0,0,210,297,undefined,"FAST");
+      return pdf.output("blob");
+    } finally {
+      document.body.classList.remove("generating-pdf");
+      if(typeof setStatus === "function") setStatus("");
     }
   };
 
@@ -651,13 +771,13 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
   });
 
   document.addEventListener("DOMContentLoaded", function(){
-    ensureArrays();
     updateItemsDisplay();
+    if(typeof updateReport === "function") updateReport();
     if(typeof updateItemCounter === "function") updateItemCounter();
   });
   setTimeout(function(){
-    ensureArrays();
     updateItemsDisplay();
+    if(typeof updateReport === "function") updateReport();
     if(typeof updateItemCounter === "function") updateItemCounter();
   }, 300);
 })();
