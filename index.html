@@ -407,54 +407,23 @@ body.ui-night .serial-status-warn{
 
 
 
-/* ===== PDF ITEMS ROW SPACING - SYNCED HEIGHTS ===== */
-
+/* ===== v25 PDF ITEMS - SIMPLE FIX ===== */
 #reportPage .report-items-cell{
+  white-space: pre-line !important;
   vertical-align: top !important;
   padding: 8px 10px !important;
-  white-space: normal !important;
+  line-height: 1.5 !important;
+}
+#reportPage #outQty,
+#reportPage #outDesc,
+#reportPage #outPart,
+#reportPage #outManual,
+#reportPage #outSerial{
+  display: block !important;
+  white-space: pre-line !important;
   word-break: break-word !important;
 }
-
-/* كل Item داخل أي عمود */
-#reportPage .ts-pdf-item-row{
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: 50px !important;
-  margin: 0 0 8px 0 !important;
-  padding: 4px 2px !important;
-  line-height: 1.3 !important;
-  word-break: break-word !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-  white-space: normal !important;
-}
-
-/* توسيط Quantity / Part / Manual / Serial */
-#reportPage .ts-pdf-item-row.ts-center{
-  justify-content: center !important;
-  text-align: center !important;
-}
-
-/* Description يبدأ من اليسار */
-#reportPage .ts-pdf-item-row.ts-left{
-  justify-content: flex-start !important;
-  text-align: left !important;
-}
-
-/* الـ wrapper الداخلي عشان يلتف النص بشكل صحيح */
-#reportPage .ts-pdf-item-row > span{
-  display: inline-block;
-  width: 100%;
-  word-break: break-word;
-  white-space: normal;
-}
-
-/* آخر Item بدون فراغ زائد */
-#reportPage .ts-pdf-item-row:last-child{
-  margin-bottom: 0 !important;
-}
+/* ===== end v25 ===== */
 
 
 /* ===== v24 PDF ITEMS REAL TABLE CSS ===== */
