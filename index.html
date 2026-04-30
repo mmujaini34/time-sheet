@@ -349,7 +349,7 @@ body.ui-night .serial-status-warn{
 
 
 
-/* ===== CLEAN PDF ITEMS ENGINE - AUTOFIT NO INNER BOXES ===== */
+/* ===== CLEAN PDF ITEMS ENGINE - VERTICAL LINES + SMART AUTOFIT ===== */
 #reportPage #tsItemsCleanRow > td{
   height:360px !important;
   padding:6px 7px !important;
@@ -367,14 +367,18 @@ body.ui-night .serial-status-warn{
 #reportPage .ts-clean-items-table td{
   border:0 !important;
   vertical-align:top !important;
-  padding:1.5px 5px !important;
+  padding:1px 5px !important;
   font-weight:bold !important;
   line-height:1.08 !important;
-  word-break:break-word !important;
+  word-break:normal !important;
   overflow-wrap:anywhere !important;
   white-space:normal !important;
   color:#000 !important;
   overflow:visible !important;
+}
+/* خطوط طولية فقط بين الأعمدة - بدون بوكسات داخلية أو خطوط أفقية */
+#reportPage .ts-clean-items-table td + td{
+  border-left:2px solid #000 !important;
 }
 #reportPage .ts-clean-items-table tr{
   border:0 !important;
@@ -392,7 +396,7 @@ body.ui-night .serial-status-warn{
 #reportPage .ts-clean-items-table .c-part{width:19%;text-align:center!important;}
 #reportPage .ts-clean-items-table .c-manual{width:17%;text-align:center!important;}
 #reportPage .ts-clean-items-table .c-serial{width:16%;text-align:center!important;}
-/* ===== end clean PDF items engine autofit no inner boxes ===== */
+/* ===== end clean PDF items engine vertical lines + smart autofit ===== */
 
 </style>
 </head><body>
@@ -1529,25 +1533,32 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
       return Math.max(
         String(row.desc || "").length,
         String(row.part || "").length,
-        String(row.serial || "").length
+        String(row.serial || "").length,
+        String(row.qty || "").length
       );
     });
     const maxText = lengths.length ? Math.max.apply(null, lengths) : 0;
 
-    let size = 13;
-    if(count <= 3) size = 13;
-    else if(count <= 5) size = 12;
-    else if(count <= 7) size = 10.8;
-    else if(count <= 9) size = 9.6;
-    else if(count <= 12) size = 8.4;
-    else if(count <= 16) size = 7.4;
+    /* Smart Auto-fit:
+       - few items = bigger readable text
+       - many items/long descriptions = smaller text
+       - keeps the same table positions and prevents overlap */
+    let size;
+    if(count <= 2) size = 15.2;
+    else if(count <= 3) size = 14.4;
+    else if(count <= 5) size = 13.2;
+    else if(count <= 7) size = 11.6;
+    else if(count <= 9) size = 10.2;
+    else if(count <= 12) size = 8.9;
+    else if(count <= 16) size = 7.8;
     else size = 6.8;
 
-    if(maxText > 42) size -= .8;
-    if(maxText > 65) size -= .7;
-    if(maxText > 90) size -= .5;
+    if(maxText > 38) size -= .6;
+    if(maxText > 55) size -= .7;
+    if(maxText > 75) size -= .6;
+    if(maxText > 100) size -= .5;
 
-    return Math.max(6.2, size);
+    return Math.max(6.1, Math.min(15.5, size));
   }
 
   function buildItemsTable(){
@@ -1568,7 +1579,7 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
     }
 
     const size = fontFor(rows.length, rows);
-    const line = rows.length > 9 ? 1.06 : (rows.length > 6 ? 1.09 : 1.14);
+    const line = rows.length > 12 ? 1.02 : (rows.length > 8 ? 1.05 : (rows.length > 5 ? 1.08 : 1.12));
     const htmlRows = rows.map(function(row, index){
       const serial = row.serialRequired === false ? "N/A" : (row.serial || "");
       const manual = index === 0 ? IM_VALUE : "";
