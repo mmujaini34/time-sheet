@@ -343,7 +343,9 @@ body.ui-night .serial-status-warn{
 
 
 
-/* ===== v21 DEEP FIX: PDF ITEMS - FORCED ROW LAYOUT ONLY ===== */
+
+
+/* ===== v22 PDF ITEMS - FINAL FIX ===== */
 #reportPage .report-items-cell{
   vertical-align: top !important;
   padding: 0 !important;
@@ -374,7 +376,6 @@ body.ui-night .serial-status-warn{
   overflow-wrap: break-word !important;
   white-space: normal !important;
   box-sizing: border-box !important;
-  overflow: hidden !important;
 }
 
 #reportPage .ts-pdf-item-row.ts-center{
@@ -398,7 +399,7 @@ body.ui-night .serial-status-warn{
 #reportPage .ts-pdf-item-row:last-child{
   margin-bottom: 0 !important;
 }
-/* ===== end v21 deep pdf items fix ===== */
+/* ===== end v22 ===== */
 
 </style>
 </head><body>
@@ -1502,33 +1503,14 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
 
 
 <script>
-/* ===== v21 DEEP ROOT FIX: PDF ITEMS RENDERING ONLY ===== */
+/* ===== v22 PDF ITEMS - OVERRIDE updateReport DIRECTLY ===== */
 (function(){
-  const INSTRUCTION_MANUAL = "A400-0405 REV";
   const COLUMN_IDS = ["outQty", "outDesc", "outPart", "outManual", "outSerial"];
-  let isRebuilding = false;
-  let rebuildTimer = null;
-  let observersReady = false;
 
   function escapePdfText(value){
     return String(value ?? "").replace(/[&<>"']/g, function(ch){
       return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch];
     });
-  }
-
-  function getItemsRows(){
-    if(Array.isArray(window.TS_ITEMS_FINAL) && window.TS_ITEMS_FINAL.length){
-      return window.TS_ITEMS_FINAL;
-    }
-    try{
-      if(typeof savedItemRows !== "undefined" && Array.isArray(savedItemRows) && savedItemRows.length){
-        return savedItemRows;
-      }
-    }catch(e){}
-    if(Array.isArray(window.savedItemRows) && window.savedItemRows.length){
-      return window.savedItemRows;
-    }
-    return [];
   }
 
   function makeItemBlock(value, alignClass){
@@ -1537,50 +1519,46 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
            '</div>';
   }
 
-  function rebuildColumns(){
-    if(isRebuilding) return;
-    isRebuilding = true;
+  /* يبني الأعمدة بـ <div> منفصلة بدل \n */
+  function rebuildItemColumns(){
+    if(typeof savedItemRows === "undefined" || !Array.isArray(savedItemRows)) return;
 
-    try{
-      const rows = getItemsRows().filter(function(row){
-        if(!row) return false;
-        return ["qty","desc","part","serial"].some(function(key){
-          return String(row[key] || "").trim();
-        });
+    const validRows = savedItemRows.filter(function(row){
+      if(!row) return false;
+      return ["qty","desc","part","manual","serial"].some(function(key){
+        return String(row[key] || "").trim();
       });
+    });
 
-      const columns = {
-        outQty: [],
-        outDesc: [],
-        outPart: [],
-        outManual: [],
-        outSerial: []
-      };
+    if(!validRows.length) return;
 
-      rows.forEach(function(row, index){
-        columns.outQty.push(makeItemBlock(row.qty || "", "ts-center"));
-        columns.outDesc.push(makeItemBlock(row.desc || "", "ts-left"));
-        columns.outPart.push(makeItemBlock(row.part || "", "ts-center"));
-        columns.outManual.push(makeItemBlock(index === 0 ? INSTRUCTION_MANUAL : "", "ts-center"));
-        columns.outSerial.push(makeItemBlock(
-          row.serialRequired === false ? "N/A" : (row.serial || ""),
-          "ts-center"
-        ));
-      });
+    const columns = {
+      outQty: [],
+      outDesc: [],
+      outPart: [],
+      outManual: [],
+      outSerial: []
+    };
 
-      Object.keys(columns).forEach(function(id){
-        const el = document.getElementById(id);
-        if(el){
-          el.innerHTML = columns[id].join("");
-        }
-      });
+    validRows.forEach(function(row){
+      columns.outQty.push(makeItemBlock(row.qty || "", "ts-center"));
+      columns.outDesc.push(makeItemBlock(row.desc || "", "ts-left"));
+      columns.outPart.push(makeItemBlock(row.part || "", "ts-center"));
+      columns.outManual.push(makeItemBlock(row.manual || "", "ts-center"));
+      columns.outSerial.push(makeItemBlock(row.serial || "", "ts-center"));
+    });
 
-      requestAnimationFrame(syncRowHeights);
-    } finally {
-      setTimeout(function(){ isRebuilding = false; }, 60);
-    }
+    Object.keys(columns).forEach(function(id){
+      const el = document.getElementById(id);
+      if(el){
+        el.innerHTML = columns[id].join("");
+      }
+    });
+
+    syncRowHeights();
   }
 
+  /* مزامنة ارتفاعات الصفوف بين الأعمدة */
   function syncRowHeights(){
     const columnsRows = COLUMN_IDS.map(function(id){
       const el = document.getElementById(id);
@@ -1589,6 +1567,7 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
 
     if(!columnsRows[0] || !columnsRows[0].length) return;
 
+    /* صفّر الارتفاعات */
     columnsRows.forEach(function(col){
       col.forEach(function(row){
         row.style.height = "auto";
@@ -1608,7 +1587,6 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
           if(h > maxHeight) maxHeight = h;
         }
       });
-
       columnsRows.forEach(function(col){
         if(col[i]){
           col[i].style.height = maxHeight + "px";
@@ -1618,111 +1596,80 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
     }
   }
 
-  function scheduleRebuild(){
-    if(rebuildTimer) clearTimeout(rebuildTimer);
-    rebuildTimer = setTimeout(rebuildColumns, 30);
+  /* اعتراض updateReport: نخليه يشتغل عادي، بعدين نعيد بناء الأعمدة */
+  function patchUpdateReport(){
+    if(typeof window.updateReport !== "function") return false;
+    if(window.updateReport.__v22Patched) return true;
+
+    const original = window.updateReport;
+    window.updateReport = function(){
+      const result = original.apply(this, arguments);
+      /* بعد ما الكود الأصلي يكتب \n، نعيد بناء الأعمدة بـ divs */
+      rebuildItemColumns();
+      return result;
+    };
+    window.updateReport.__v22Patched = true;
+    return true;
   }
 
-  function scheduleSyncOrRebuild(){
-    if(isRebuilding) return;
-    const first = document.getElementById("outQty");
-    const hasRows = first && first.querySelector(".ts-pdf-item-row");
-    if(hasRows){
-      if(rebuildTimer) clearTimeout(rebuildTimer);
-      rebuildTimer = setTimeout(syncRowHeights, 30);
-    }else{
-      scheduleRebuild();
-    }
-  }
+  /* اعتراض createPdfBlob: نضمن إن الأعمدة مبنية قبل التقاط الصورة */
+  function patchCreatePdfBlob(){
+    if(typeof window.createPdfBlob !== "function") return false;
+    if(window.createPdfBlob.__v22Patched) return true;
 
-  function setupObservers(){
-    if(observersReady) return;
-    observersReady = true;
+    const original = window.createPdfBlob;
+    window.createPdfBlob = async function(){
+      /* تأكد من تحديث updateReport أولاً */
+      if(typeof window.updateReport === "function"){
+        window.updateReport();
+      }
+      /* إعادة بناء صريحة قبل التقاط الصورة */
+      rebuildItemColumns();
 
-    COLUMN_IDS.forEach(function(id){
-      const el = document.getElementById(id);
-      if(!el) return;
-
-      const observer = new MutationObserver(function(){
-        scheduleSyncOrRebuild();
-      });
-
-      observer.observe(el, {
-        childList: true,
-        subtree: true,
-        characterData: true
-      });
-    });
-  }
-
-  function hookFunctions(){
-    const origUpdate = window.updateReport;
-    if(typeof origUpdate === "function" && !origUpdate.__itemsDeepPatched){
-      window.updateReport = function(){
-        const result = origUpdate.apply(this, arguments);
-        scheduleRebuild();
-        return result;
-      };
-      window.updateReport.__itemsDeepPatched = true;
-    }
-
-    const origPdf = window.createPdfBlob;
-    if(typeof origPdf === "function" && !origPdf.__itemsDeepPatched){
-      window.createPdfBlob = async function(){
-        if(typeof window.updateReport === "function"){
-          window.updateReport();
-        }
-
-        rebuildColumns();
-
-        await new Promise(function(resolve){
+      /* انتظر إطارين عشان المتصفح يحسب الارتفاعات */
+      await new Promise(function(resolve){
+        requestAnimationFrame(function(){
           requestAnimationFrame(function(){
-            requestAnimationFrame(function(){
-              rebuildColumns();
-              syncRowHeights();
-              resolve();
-            });
+            rebuildItemColumns();
+            syncRowHeights();
+            resolve();
           });
         });
+      });
 
-        return await origPdf.apply(this, arguments);
-      };
-      window.createPdfBlob.__itemsDeepPatched = true;
-    }
+      return await original.apply(this, arguments);
+    };
+    window.createPdfBlob.__v22Patched = true;
+    return true;
   }
 
-  function tryHookRepeatedly(){
+  /* محاولة الربط بشكل متكرر حتى تنجح */
+  function tryPatch(){
     let attempts = 0;
-    const maxAttempts = 40;
+    const maxAttempts = 60; /* 60 × 200ms = 12 ثانية */
     const interval = setInterval(function(){
-      hookFunctions();
       attempts++;
-
-      const updateOk = window.updateReport && window.updateReport.__itemsDeepPatched;
-      const pdfOk = window.createPdfBlob && window.createPdfBlob.__itemsDeepPatched;
-
-      if((updateOk && pdfOk) || attempts >= maxAttempts){
+      const u = patchUpdateReport();
+      const p = patchCreatePdfBlob();
+      if((u && p) || attempts >= maxAttempts){
         clearInterval(interval);
+        /* بعد الربط، نفذ تحديث أولي */
+        if(typeof window.updateReport === "function"){
+          try{ window.updateReport(); }catch(e){}
+        }
       }
-    }, 250);
-  }
-
-  function bootstrap(){
-    setupObservers();
-    tryHookRepeatedly();
-    setTimeout(rebuildColumns, 500);
-    setTimeout(rebuildColumns, 1500);
+    }, 200);
   }
 
   if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", bootstrap);
-  }else{
-    bootstrap();
+    document.addEventListener("DOMContentLoaded", tryPatch);
+  } else {
+    tryPatch();
   }
 
-  window.__forceRebuildItems = rebuildColumns;
-  window.__syncPdfItemRows = syncRowHeights;
+  /* للاختبار اليدوي */
+  window.__rebuildItems = rebuildItemColumns;
 })();
+/* ===== end v22 ===== */
 </script>
-
 </body></html>
