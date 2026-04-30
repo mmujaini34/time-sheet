@@ -229,43 +229,7 @@ body.ui-night .btn-secondary{
 /* ===== end v7 input ui + theme fix ===== */
 
 
-/* ===== v10 PDF ITEMS ALIGNMENT FIX ONLY - TABLE SHAPE UNCHANGED ===== */
-#reportPage .report-items-cell{
-  vertical-align:top !important;
-  padding:8px 9px !important;
-  white-space:normal !important;
-  word-break:break-word !important;
-}
-#reportPage .pdf-item-line{
-  min-height:34px;
-  margin:0 0 4px 0;
-  padding:0 1px;
-  line-height:1.14;
-  display:flex;
-  align-items:flex-start;
-  justify-content:flex-start;
-  overflow:hidden;
-}
-#reportPage .pdf-item-line.pdf-center{
-  justify-content:center;
-  text-align:center;
-}
-#reportPage .pdf-item-line.pdf-desc{
-  text-align:left;
-  font-size:12.4px;
-  line-height:1.12;
-}
-#reportPage .pdf-item-line.pdf-part,
-#reportPage .pdf-item-line.pdf-serial,
-#reportPage .pdf-item-line.pdf-manual{
-  font-size:12.2px;
-  line-height:1.12;
-}
-#reportPage .pdf-item-line.pdf-qty{
-  font-size:13px;
-  line-height:1.12;
-}
-/* ===== end v10 pdf items alignment fix ===== */
+
 
 
 /* ===== v11 ENGINEER NAME AUTOFIT ONLY - PDF SHAPE UNCHANGED ===== */
@@ -287,34 +251,7 @@ body.ui-night .btn-secondary{
 /* ===== end v11 engineer name autofit ===== */
 
 
-/* ===== v14 PDF ITEMS SPACING FIX ONLY - TABLE SHAPE UNCHANGED ===== */
-#reportPage .report-items-cell{
-  vertical-align:top !important;
-  padding:9px 10px !important;
-  white-space:normal !important;
-  word-break:break-word !important;
-}
-#reportPage .pdf-item-line{
-  min-height:54px !important;
-  margin:0 0 9px 0 !important;
-  padding:0 2px !important;
-  line-height:1.12 !important;
-  display:flex !important;
-  align-items:flex-start !important;
-  overflow:hidden !important;
-}
-#reportPage .pdf-item-line.pdf-center{
-  justify-content:center !important;
-  text-align:center !important;
-}
-#reportPage .pdf-item-line.pdf-desc{
-  justify-content:flex-start !important;
-  text-align:left !important;
-}
-#reportPage .pdf-item-line:last-child{
-  margin-bottom:0 !important;
-}
-/* ===== end v14 pdf items spacing fix ===== */
+
 
 
 /* ===== v16 NIGHT ORANGE ACCENT UI ONLY - PDF UNCHANGED ===== */
@@ -407,55 +344,43 @@ body.ui-night .serial-status-warn{
 
 
 
-/* ===== v25 PDF ITEMS - SIMPLE FIX ===== */
-#reportPage .report-items-cell{
-  white-space: pre-line !important;
-  vertical-align: top !important;
-  padding: 8px 10px !important;
-  line-height: 1.5 !important;
-}
-#reportPage #outQty,
-#reportPage #outDesc,
-#reportPage #outPart,
-#reportPage #outManual,
-#reportPage #outSerial{
-  display: block !important;
-  white-space: pre-line !important;
-  word-break: break-word !important;
-}
-/* ===== end v25 ===== */
 
 
-/* ===== v24 PDF ITEMS REAL TABLE CSS ===== */
-#reportPage .ts-items-table{
+
+
+
+/* ===== CLEAN PDF ITEMS ENGINE - ONE TABLE ONLY ===== */
+#reportPage #tsItemsCleanRow > td{
+  height:360px !important;
+  padding:0 !important;
+  border:2px solid #000 !important;
+  vertical-align:top !important;
+  overflow:hidden !important;
+}
+#reportPage .ts-clean-items-table{
   width:100% !important;
+  height:100% !important;
   border-collapse:collapse !important;
   table-layout:fixed !important;
   margin:0 !important;
 }
-#reportPage .ts-items-table td{
+#reportPage .ts-clean-items-table td{
   border:2px solid #000 !important;
   vertical-align:middle !important;
-  padding:8px 8px !important;
-  font-size:13px !important;
+  padding:6px 7px !important;
   font-weight:bold !important;
-  line-height:1.18 !important;
+  line-height:1.15 !important;
   word-break:break-word !important;
   white-space:normal !important;
   color:#000 !important;
+  overflow:hidden !important;
 }
-#reportPage .ts-items-table .ts-center{
-  text-align:center !important;
-}
-#reportPage .ts-items-table .ts-left{
-  text-align:left !important;
-}
-#reportPage .ts-items-table .col-qty{width:15% !important;}
-#reportPage .ts-items-table .col-desc{width:33% !important;}
-#reportPage .ts-items-table .col-part{width:19% !important;}
-#reportPage .ts-items-table .col-manual{width:17% !important;}
-#reportPage .ts-items-table .col-serial{width:16% !important;}
-/* ===== end v24 real table css ===== */
+#reportPage .ts-clean-items-table .c-qty{width:15%;text-align:center!important;}
+#reportPage .ts-clean-items-table .c-desc{width:33%;text-align:left!important;}
+#reportPage .ts-clean-items-table .c-part{width:19%;text-align:center!important;}
+#reportPage .ts-clean-items-table .c-manual{width:17%;text-align:center!important;}
+#reportPage .ts-clean-items-table .c-serial{width:16%;text-align:center!important;}
+/* ===== end clean PDF items engine ===== */
 
 </style>
 </head><body>
@@ -1122,88 +1047,6 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
 
 
 <script>
-/* ===== v10 PDF ITEMS ALIGNMENT FIX - DIRECT CELL BLOCKS ===== */
-(function(){
-  const IM_VALUE = "A400-0405 REV";
-  const previousUpdateReport = window.updateReport;
-  const previousCreatePdfBlob = window.createPdfBlob;
-
-  function esc(v){
-    return String(v ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-  }
-
-  function getRows(){
-    if(Array.isArray(window.TS_ITEMS_FINAL) && window.TS_ITEMS_FINAL.length) return window.TS_ITEMS_FINAL;
-    try{
-      if(Array.isArray(savedItemRows) && savedItemRows.length) return savedItemRows;
-    }catch(e){}
-    return [];
-  }
-
-  function setCellHtml(id, html){
-    const el = document.getElementById(id);
-    if(el) el.innerHTML = html;
-  }
-
-  function line(value, cls){
-    return `<div class="pdf-item-line ${cls || ""}">${esc(value || "")}</div>`;
-  }
-
-  function applyAlignedItemsToPdf(){
-    const rows = getRows().filter(row => row && ["qty","desc","part","serial"].some(k => String(row[k] || "").trim()));
-
-    const qtyHtml = [];
-    const descHtml = [];
-    const partHtml = [];
-    const manualHtml = [];
-    const serialHtml = [];
-
-    rows.forEach((row, index) => {
-      qtyHtml.push(line(row.qty || "", "pdf-qty pdf-center"));
-      descHtml.push(line(row.desc || "", "pdf-desc"));
-      partHtml.push(line(row.part || "", "pdf-part pdf-center"));
-      manualHtml.push(line(index === 0 ? IM_VALUE : "", "pdf-manual pdf-center"));
-      serialHtml.push(line(row.serialRequired === false ? "N/A" : (row.serial || ""), "pdf-serial pdf-center"));
-    });
-
-    setCellHtml("outQty", qtyHtml.join(""));
-    setCellHtml("outDesc", descHtml.join(""));
-    setCellHtml("outPart", partHtml.join(""));
-    setCellHtml("outManual", manualHtml.join(""));
-    setCellHtml("outSerial", serialHtml.join(""));
-  }
-
-  window.updateReport = function(){
-    if(typeof previousUpdateReport === "function"){
-      previousUpdateReport();
-    }
-    applyAlignedItemsToPdf();
-    if(typeof autoFitReport === "function"){
-      try{ autoFitReport(); }catch(e){}
-    }
-  };
-
-  window.createPdfBlob = async function(){
-    window.updateReport();
-    applyAlignedItemsToPdf();
-    if(typeof previousCreatePdfBlob === "function"){
-      return await previousCreatePdfBlob();
-    }
-    throw new Error("PDF generator is not available.");
-  };
-
-  document.addEventListener("DOMContentLoaded", function(){
-    setTimeout(function(){
-      try{
-        applyAlignedItemsToPdf();
-      }catch(e){}
-    }, 350);
-  });
-})();
-</script>
-
-
-<script>
 /* ===== v11 ENGINEER NAME AUTOFIT - PDF SHAPE UNCHANGED ===== */
 (function(){
   const prevUpdateReport = window.updateReport;
@@ -1575,180 +1418,6 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
 
 
 <script>
-/* ===== FINAL PDF ITEMS - SYNCED ROW HEIGHTS ===== */
-
-(function(){
-  const previousUpdateReport = window.updateReport;
-  const previousCreatePdfBlob = window.createPdfBlob;
-  const INSTRUCTION_MANUAL = "A400-0405 REV";
-  const COLUMN_IDS = ["outQty", "outDesc", "outPart", "outManual", "outSerial"];
-
-  function escapePdfText(value){
-    return String(value ?? "").replace(/[&<>"']/g, function(ch){
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      }[ch];
-    });
-  }
-
-  function getItemsRows(){
-    if(Array.isArray(window.TS_ITEMS_FINAL) && window.TS_ITEMS_FINAL.length){
-      return window.TS_ITEMS_FINAL;
-    }
-    try{
-      if(typeof savedItemRows !== "undefined" && Array.isArray(savedItemRows) && savedItemRows.length){
-        return savedItemRows;
-      }
-    }catch(e){}
-    if(Array.isArray(window.savedItemRows) && window.savedItemRows.length){
-      return window.savedItemRows;
-    }
-    return [];
-  }
-
-  function makeItemBlock(value, alignClass){
-    return '<div class="ts-pdf-item-row ' + alignClass + '">' +
-             '<span>' + escapePdfText(value || "") + '</span>' +
-           '</div>';
-  }
-
-  function applyPdfItemsSpacing(){
-    const rows = getItemsRows().filter(function(row){
-      if(!row) return false;
-      return ["qty", "desc", "part", "serial"].some(function(key){
-        return String(row[key] || "").trim();
-      });
-    });
-
-    const qtyHtml = [];
-    const descHtml = [];
-    const partHtml = [];
-    const manualHtml = [];
-    const serialHtml = [];
-
-    rows.forEach(function(row, index){
-      qtyHtml.push(makeItemBlock(row.qty || "", "ts-center"));
-      descHtml.push(makeItemBlock(row.desc || "", "ts-left"));
-      partHtml.push(makeItemBlock(row.part || "", "ts-center"));
-      manualHtml.push(makeItemBlock(index === 0 ? INSTRUCTION_MANUAL : "", "ts-center"));
-      serialHtml.push(makeItemBlock(
-        row.serialRequired === false ? "N/A" : (row.serial || ""),
-        "ts-center"
-      ));
-    });
-
-    const outputMap = {
-      outQty: qtyHtml.join(""),
-      outDesc: descHtml.join(""),
-      outPart: partHtml.join(""),
-      outManual: manualHtml.join(""),
-      outSerial: serialHtml.join("")
-    };
-
-    Object.keys(outputMap).forEach(function(id){
-      const el = document.getElementById(id);
-      if(el) el.innerHTML = outputMap[id];
-    });
-
-    syncRowHeights();
-  }
-
-  /* مزامنة الارتفاعات: لو Description طويل، باقي الأعمدة تكبر معه */
-  function syncRowHeights(){
-    const columnsRows = COLUMN_IDS.map(function(id){
-      const el = document.getElementById(id);
-      return el ? Array.prototype.slice.call(el.querySelectorAll(".ts-pdf-item-row")) : [];
-    });
-
-    if(!columnsRows[0] || !columnsRows[0].length) return;
-
-    /* صفّر أي ارتفاعات قديمة */
-    columnsRows.forEach(function(col){
-      col.forEach(function(row){
-        row.style.height = "auto";
-        row.style.minHeight = "50px";
-      });
-    });
-
-    /* جبر المتصفح يعيد الحساب */
-    void document.body.offsetHeight;
-
-    const rowCount = Math.max.apply(null, columnsRows.map(function(c){ return c.length; }));
-
-    for(let i = 0; i < rowCount; i++){
-      let maxHeight = 0;
-      columnsRows.forEach(function(col){
-        if(col[i]){
-          const h = col[i].scrollHeight;
-          if(h > maxHeight) maxHeight = h;
-        }
-      });
-
-      if(maxHeight < 50) maxHeight = 50;
-
-      columnsRows.forEach(function(col){
-        if(col[i]){
-          col[i].style.height = maxHeight + "px";
-          col[i].style.minHeight = maxHeight + "px";
-        }
-      });
-    }
-  }
-
-  /* Wrappers تحافظ على السلوك الأصلي */
-  window.updateReport = function(){
-    if(typeof previousUpdateReport === "function"){
-      previousUpdateReport.apply(this, arguments);
-    } else if(typeof window.__originalUpdateReport === "function"){
-      window.__originalUpdateReport.apply(this, arguments);
-    }
-    applyPdfItemsSpacing();
-  };
-
-  window.createPdfBlob = async function(){
-    if(typeof window.updateReport === "function"){
-      window.updateReport();
-    }
-    applyPdfItemsSpacing();
-
-    const report = document.getElementById("reportPage");
-    if(report) void report.offsetHeight;
-
-    /* انتظر إطارين عشان المتصفح ينهي حساب الارتفاعات */
-    await new Promise(function(resolve){
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          syncRowHeights();
-          resolve();
-        });
-      });
-    });
-
-    if(typeof previousCreatePdfBlob === "function"){
-      return await previousCreatePdfBlob.apply(this, arguments);
-    }
-    throw new Error("PDF generator is not available.");
-  };
-
-  /* تشغيل أولي */
-  function bootstrap(){
-    setTimeout(applyPdfItemsSpacing, 300);
-    setTimeout(applyPdfItemsSpacing, 800);  /* محاولة ثانية بعد ما كل شي يحمّل */
-  }
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", bootstrap);
-  } else {
-    bootstrap();
-  }
-})();
-</script>
-
-<script>
 /* ===== v20 UPPERCASE DESCRIPTION/PART NUMBER RULE ONLY ===== */
 (function(){
   function upper(v){
@@ -1813,167 +1482,120 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
 })();
 </script>
 
-<script>
-/* ===== v24 PDF ITEMS - BUILD REAL TABLE ROWS ===== */
-(function(){
-  const TABLE_ID = "tsItemsRealTable";
 
-  function escapeHtml(value){
+<script>
+/* ===== CLEAN PDF ITEMS ENGINE - SINGLE SOURCE OF TRUTH ===== */
+(function(){
+  const ROW_ID = "tsItemsCleanRow";
+  const IM_VALUE = "A400-0405 REV";
+
+  function esc(value){
     return String(value ?? "").replace(/[&<>"']/g, function(ch){
       return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch];
     });
   }
 
-  function readColumnArray(id){
-    const el = document.getElementById(id);
-    if(!el) return [];
-    const text = el.textContent || "";
-    if(!text.trim()) return [];
-    return text.split("\n");
+  function getRows(){
+    let rows = [];
+    if(Array.isArray(window.TS_ITEMS_FINAL) && window.TS_ITEMS_FINAL.length){
+      rows = window.TS_ITEMS_FINAL;
+    }else{
+      try{
+        if(Array.isArray(savedItemRows) && savedItemRows.length) rows = savedItemRows;
+      }catch(e){}
+    }
+    return (rows || []).filter(function(row){
+      if(!row) return false;
+      return ["qty","desc","part","serial"].some(function(key){
+        return String(row[key] || "").trim();
+      });
+    });
   }
 
-  function buildRealTable(){
-    const data = {
-      qty:    readColumnArray("outQty"),
-      desc:   readColumnArray("outDesc"),
-      part:   readColumnArray("outPart"),
-      manual: readColumnArray("outManual"),
-      serial: readColumnArray("outSerial")
-    };
+  function fontFor(count){
+    if(count <= 4) return 13;
+    if(count <= 6) return 11.5;
+    if(count <= 9) return 10;
+    if(count <= 12) return 8.8;
+    if(count <= 16) return 7.8;
+    return 7;
+  }
 
-    const maxRows = Math.max(
-      data.qty.length, data.desc.length, data.part.length,
-      data.manual.length, data.serial.length
-    );
-
-    if(maxRows === 0) return;
-
-    const hasContent = ["qty","desc","part","manual","serial"].some(function(key){
-      return data[key].some(function(v){ return String(v || "").trim(); });
-    });
-    if(!hasContent) return;
-
-    const rows = [];
-    for(let i = 0; i < maxRows; i++){
-      rows.push(
-        '<tr>' +
-          '<td class="ts-center">' + escapeHtml(data.qty[i] || "") + '</td>' +
-          '<td class="ts-left">' + escapeHtml(data.desc[i] || "") + '</td>' +
-          '<td class="ts-center">' + escapeHtml(data.part[i] || "") + '</td>' +
-          '<td class="ts-center">' + escapeHtml(data.manual[i] || "") + '</td>' +
-          '<td class="ts-center">' + escapeHtml(data.serial[i] || "") + '</td>' +
-        '</tr>'
-      );
-    }
-
-    const tableHTML = 
-      '<table class="ts-items-table" id="' + TABLE_ID + '">' +
-        '<colgroup>' +
-          '<col class="col-qty">' +
-          '<col class="col-desc">' +
-          '<col class="col-part">' +
-          '<col class="col-manual">' +
-          '<col class="col-serial">' +
-        '</colgroup>' +
-        '<tbody>' + rows.join("") + '</tbody>' +
-      '</table>';
-
+  function buildItemsTable(){
+    const rows = getRows();
     const outQty = document.getElementById("outQty");
     if(!outQty) return;
 
-    let row = outQty;
-    while(row && row.tagName !== "TR" && row.parentNode){
-      row = row.parentNode;
-    }
-    if(!row || row.tagName !== "TR") return;
+    let originalRow = outQty;
+    while(originalRow && originalRow.tagName !== "TR") originalRow = originalRow.parentNode;
+    if(!originalRow || !originalRow.parentNode) return;
 
-    const oldNewRow = document.getElementById("tsItemsRealRow");
-    if(oldNewRow && oldNewRow.parentNode){
-      oldNewRow.parentNode.removeChild(oldNewRow);
-    }
+    const oldCleanRow = document.getElementById(ROW_ID);
+    if(oldCleanRow && oldCleanRow.parentNode) oldCleanRow.parentNode.removeChild(oldCleanRow);
 
-    const newRow = document.createElement("tr");
-    newRow.id = "tsItemsRealRow";
-
-    const newCell = document.createElement("td");
-    newCell.colSpan = 5;
-    newCell.style.padding = "0";
-    newCell.style.border = "none";
-    newCell.innerHTML = tableHTML;
-
-    newRow.appendChild(newCell);
-
-    if(row.parentNode){
-      row.parentNode.insertBefore(newRow, row.nextSibling);
+    if(!rows.length){
+      originalRow.style.display = "";
+      return;
     }
 
-    row.style.display = "none";
+    const size = fontFor(rows.length);
+    const htmlRows = rows.map(function(row, index){
+      const serial = row.serialRequired === false ? "N/A" : (row.serial || "");
+      const manual = index === 0 ? IM_VALUE : "";
+      return '<tr>' +
+        '<td class="c-qty" style="font-size:'+size+'px">' + esc(row.qty || "") + '</td>' +
+        '<td class="c-desc" style="font-size:'+size+'px">' + esc(row.desc || "") + '</td>' +
+        '<td class="c-part" style="font-size:'+size+'px">' + esc(row.part || "") + '</td>' +
+        '<td class="c-manual" style="font-size:'+size+'px">' + esc(manual) + '</td>' +
+        '<td class="c-serial" style="font-size:'+size+'px">' + esc(serial) + '</td>' +
+      '</tr>';
+    }).join("");
+
+    const cleanRow = document.createElement("tr");
+    cleanRow.id = ROW_ID;
+    const cell = document.createElement("td");
+    cell.colSpan = 5;
+    cell.innerHTML = '<table class="ts-clean-items-table"><tbody>' + htmlRows + '</tbody></table>';
+    cleanRow.appendChild(cell);
+
+    originalRow.parentNode.insertBefore(cleanRow, originalRow.nextSibling);
+    originalRow.style.display = "none";
   }
 
-  function patchUpdateReport(){
-    if(typeof window.updateReport !== "function") return false;
-    if(window.updateReport.__v24Patched) return true;
+  const previousUpdateReport = window.updateReport;
+  window.updateReport = function(){
+    const result = typeof previousUpdateReport === "function" ? previousUpdateReport.apply(this, arguments) : undefined;
+    try{ buildItemsTable(); }catch(e){ console.warn("clean items table:", e); }
+    return result;
+  };
 
-    const original = window.updateReport;
-    window.updateReport = function(){
-      const result = original.apply(this, arguments);
-      try{ buildRealTable(); }catch(e){ console.warn("v24:", e); }
-      return result;
-    };
-    window.updateReport.__v24Patched = true;
-    return true;
-  }
-
-  function patchCreatePdfBlob(){
-    if(typeof window.createPdfBlob !== "function") return false;
-    if(window.createPdfBlob.__v24Patched) return true;
-
-    const original = window.createPdfBlob;
+  const previousCreatePdfBlob = window.createPdfBlob;
+  if(typeof previousCreatePdfBlob === "function"){
     window.createPdfBlob = async function(){
       if(typeof window.updateReport === "function"){
         try{ window.updateReport(); }catch(e){}
       }
-      try{ buildRealTable(); }catch(e){}
-
+      try{ buildItemsTable(); }catch(e){}
       await new Promise(function(resolve){
         requestAnimationFrame(function(){
           requestAnimationFrame(function(){
-            try{ buildRealTable(); }catch(e){}
+            try{ buildItemsTable(); }catch(e){}
             resolve();
           });
         });
       });
-
-      return await original.apply(this, arguments);
+      return await previousCreatePdfBlob.apply(this, arguments);
     };
-    window.createPdfBlob.__v24Patched = true;
-    return true;
   }
 
-  function tryPatch(){
-    let attempts = 0;
-    const interval = setInterval(function(){
-      attempts++;
-      const u = patchUpdateReport();
-      const p = patchCreatePdfBlob();
-      if((u && p) || attempts >= 80){
-        clearInterval(interval);
-        if(typeof window.updateReport === "function"){
-          try{ window.updateReport(); }catch(e){}
-        }
-      }
-    }, 200);
-  }
-
+  window.__cleanBuildItemsTable = buildItemsTable;
   if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", tryPatch);
-  } else {
-    tryPatch();
+    document.addEventListener("DOMContentLoaded", buildItemsTable);
+  }else{
+    buildItemsTable();
   }
-
-  window.__v24Rebuild = buildRealTable;
-  console.log("✅ v24 script loaded successfully");
 })();
-/* ===== end v24 ===== */
+/* ===== end clean PDF items engine ===== */
 </script>
+
 </body></html>
