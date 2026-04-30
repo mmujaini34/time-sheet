@@ -229,280 +229,85 @@ body.ui-night .btn-secondary{
 /* ===== end v7 input ui + theme fix ===== */
 
 
-/* ===== v10 STRONG DARK + NIGHT COLORS - INPUT UI ONLY, PDF UNCHANGED ===== */
+/* ===== v10 PDF ITEMS ALIGNMENT FIX ONLY - TABLE SHAPE UNCHANGED ===== */
+#reportPage .report-items-cell{
+  vertical-align:top !important;
+  padding:8px 9px !important;
+  white-space:normal !important;
+  word-break:break-word !important;
+}
+#reportPage .pdf-item-line{
+  min-height:34px;
+  margin:0 0 4px 0;
+  padding:0 1px;
+  line-height:1.14;
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  overflow:hidden;
+}
+#reportPage .pdf-item-line.pdf-center{
+  justify-content:center;
+  text-align:center;
+}
+#reportPage .pdf-item-line.pdf-desc{
+  text-align:left;
+  font-size:12.4px;
+  line-height:1.12;
+}
+#reportPage .pdf-item-line.pdf-part,
+#reportPage .pdf-item-line.pdf-serial,
+#reportPage .pdf-item-line.pdf-manual{
+  font-size:12.2px;
+  line-height:1.12;
+}
+#reportPage .pdf-item-line.pdf-qty{
+  font-size:13px;
+  line-height:1.12;
+}
+/* ===== end v10 pdf items alignment fix ===== */
 
-/* Light stays normal */
 
-/* DARK MODE: deep slate + blue accents */
-body.ui-dark{
-  background:#0b1120 !important;
-  color:#e5e7eb !important;
+/* ===== v11 ENGINEER NAME AUTOFIT ONLY - PDF SHAPE UNCHANGED ===== */
+#reportPage .engineer-names{
+  font-size:17px !important;
+  line-height:1.08 !important;
+  font-weight:bold !important;
+  padding:6px 9px !important;
+  white-space:pre-line !important;
+  word-break:break-word !important;
+  overflow:hidden !important;
 }
-body.ui-dark .app-shell{
-  background:linear-gradient(180deg,#0b1120,#111827) !important;
+#reportPage #outBiwEngineerName,
+#reportPage #outEspEngineerName{
+  display:block;
+  width:100%;
+  max-height:100%;
 }
-body.ui-dark .input-panel{
-  background:#111827 !important;
-  border-color:#334155 !important;
-  box-shadow:0 14px 38px rgba(0,0,0,.45) !important;
-}
-body.ui-dark .form-section{
-  background:#172033 !important;
-  border-color:#3b4a60 !important;
-}
-body.ui-dark .input-title,
-body.ui-dark h1,
-body.ui-dark h2,
-body.ui-dark h3,
-body.ui-dark .section-title-wrap h3,
-body.ui-dark .item-row-title{
-  color:#f8fafc !important;
-}
-body.ui-dark .input-note,
-body.ui-dark .section-title-wrap p,
-body.ui-dark .items-display-sub,
-body.ui-dark .required-hint,
-body.ui-dark .status-text,
-body.ui-dark .items-summary{
-  color:#cbd5e1 !important;
-}
-body.ui-dark label,
-body.ui-dark .modal-field label,
-body.ui-dark .form-field label,
-body.ui-dark .item-mini-field label{
-  color:#dbeafe !important;
-}
-body.ui-dark input,
-body.ui-dark textarea,
-body.ui-dark select,
-body.ui-dark .select-card,
-body.ui-dark .auto-value,
-body.ui-dark .auto-readonly{
-  background:#0f172a !important;
-  color:#f8fafc !important;
-  border:1px solid #64748b !important;
-  box-shadow:inset 0 0 0 1px rgba(148,163,184,.10) !important;
-}
-body.ui-dark input::placeholder,
-body.ui-dark textarea::placeholder{
-  color:#94a3b8 !important;
-}
-body.ui-dark input:focus,
-body.ui-dark textarea:focus,
-body.ui-dark select:focus,
-body.ui-dark .select-card:focus{
-  border-color:#60a5fa !important;
-  box-shadow:0 0 0 3px rgba(96,165,250,.22) !important;
-}
-body.ui-dark .step-badge,
-body.ui-dark .btn-primary,
-body.ui-dark .done-btn{
-  background:#2563eb !important;
-  color:#ffffff !important;
-}
-body.ui-dark .btn-secondary,
-body.ui-dark .cancel-btn{
-  background:#334155 !important;
-  color:#f8fafc !important;
-  border:1px solid #64748b !important;
-}
-body.ui-dark .modal-overlay{
-  background:rgba(2,6,23,.75) !important;
-}
-body.ui-dark .modal-box{
-  background:#111827 !important;
-  color:#f8fafc !important;
-  border:1px solid #475569 !important;
-}
-body.ui-dark .modal-preview{
-  background:#0f172a !important;
-  color:#dbeafe !important;
-  border:1px solid #475569 !important;
-}
-body.ui-dark .item-editor-row{
-  background:#172033 !important;
-  border:1px solid #475569 !important;
-  box-shadow:0 12px 28px rgba(0,0,0,.35) !important;
-}
-body.ui-dark .item-row-top{
-  border-bottom-color:#475569 !important;
-}
-body.ui-dark .item-part-card{
-  background:#1e3a8a !important;
-  color:#dbeafe !important;
-  border:1px solid #60a5fa !important;
-}
-body.ui-dark .item-results-box{
-  background:#0f172a !important;
-  border-color:#64748b !important;
-  box-shadow:0 14px 32px rgba(0,0,0,.45) !important;
-}
-body.ui-dark .item-result-btn{
-  background:#0f172a !important;
-  color:#f8fafc !important;
-  border-bottom:1px solid #334155 !important;
-}
-body.ui-dark .item-result-btn:hover{
-  background:#1d4ed8 !important;
-}
-body.ui-dark .item-result-desc{
-  color:#f8fafc !important;
-}
-body.ui-dark .item-result-pn{
-  color:#bfdbfe !important;
-}
-body.ui-dark .validation-hint.active,
-body.ui-dark .validation-hint{
-  background:#451a1a !important;
-  color:#fecaca !important;
-  border:1px solid #ef4444 !important;
-}
-body.ui-dark .serial-status-ok{color:#86efac !important}
-body.ui-dark .serial-status-warn{color:#fde68a !important}
-body.ui-dark .serial-status-error{color:#fca5a5 !important}
+/* ===== end v11 engineer name autofit ===== */
 
-/* NIGHT MODE: black + amber accents */
-body.ui-night{
-  background:#000000 !important;
-  color:#fff7ed !important;
-}
-body.ui-night .app-shell{
-  background:radial-gradient(circle at top,#1c1917,#000000 70%) !important;
-}
-body.ui-night .input-panel{
-  background:#0c0a09 !important;
-  border-color:#78350f !important;
-  box-shadow:0 16px 42px rgba(245,158,11,.10) !important;
-}
-body.ui-night .form-section{
-  background:#1c1917 !important;
-  border-color:#92400e !important;
-}
-body.ui-night .input-title,
-body.ui-night h1,
-body.ui-night h2,
-body.ui-night h3,
-body.ui-night .section-title-wrap h3,
-body.ui-night .item-row-title{
-  color:#fffbeb !important;
-}
-body.ui-night .input-note,
-body.ui-night .section-title-wrap p,
-body.ui-night .items-display-sub,
-body.ui-night .required-hint,
-body.ui-night .status-text,
-body.ui-night .items-summary{
-  color:#fed7aa !important;
-}
-body.ui-night label,
-body.ui-night .modal-field label,
-body.ui-night .form-field label,
-body.ui-night .item-mini-field label{
-  color:#fde68a !important;
-}
-body.ui-night input,
-body.ui-night textarea,
-body.ui-night select,
-body.ui-night .select-card,
-body.ui-night .auto-value,
-body.ui-night .auto-readonly{
-  background:#000000 !important;
-  color:#fffbeb !important;
-  border:1px solid #d97706 !important;
-  box-shadow:inset 0 0 0 1px rgba(251,191,36,.12) !important;
-}
-body.ui-night input::placeholder,
-body.ui-night textarea::placeholder{
-  color:#fbbf24 !important;
-  opacity:.75 !important;
-}
-body.ui-night input:focus,
-body.ui-night textarea:focus,
-body.ui-night select:focus,
-body.ui-night .select-card:focus{
-  border-color:#f59e0b !important;
-  box-shadow:0 0 0 3px rgba(245,158,11,.24) !important;
-}
-body.ui-night .step-badge,
-body.ui-night .btn-primary,
-body.ui-night .done-btn{
-  background:#f59e0b !important;
-  color:#111827 !important;
-}
-body.ui-night .btn-secondary,
-body.ui-night .cancel-btn{
-  background:#292524 !important;
-  color:#fffbeb !important;
-  border:1px solid #d97706 !important;
-}
-body.ui-night .modal-overlay{
-  background:rgba(0,0,0,.82) !important;
-}
-body.ui-night .modal-box{
-  background:#0c0a09 !important;
-  color:#fffbeb !important;
-  border:1px solid #d97706 !important;
-}
-body.ui-night .modal-preview{
-  background:#000000 !important;
-  color:#fde68a !important;
-  border:1px solid #d97706 !important;
-}
-body.ui-night .item-editor-row{
-  background:#1c1917 !important;
-  border:1px solid #d97706 !important;
-  box-shadow:0 12px 30px rgba(245,158,11,.12) !important;
-}
-body.ui-night .item-row-top{
-  border-bottom-color:#92400e !important;
-}
-body.ui-night .item-part-card{
-  background:#451a03 !important;
-  color:#fffbeb !important;
-  border:1px solid #f59e0b !important;
-}
-body.ui-night .item-results-box{
-  background:#000000 !important;
-  border-color:#d97706 !important;
-  box-shadow:0 14px 32px rgba(245,158,11,.15) !important;
-}
-body.ui-night .item-result-btn{
-  background:#000000 !important;
-  color:#fffbeb !important;
-  border-bottom:1px solid #451a03 !important;
-}
-body.ui-night .item-result-btn:hover{
-  background:#92400e !important;
-}
-body.ui-night .item-result-desc{
-  color:#fffbeb !important;
-}
-body.ui-night .item-result-pn{
-  color:#fde68a !important;
-}
-body.ui-night .validation-hint.active,
-body.ui-night .validation-hint{
-  background:#3f1d1d !important;
-  color:#fecaca !important;
-  border:1px solid #dc2626 !important;
-}
-body.ui-night .serial-status-ok{color:#86efac !important}
-body.ui-night .serial-status-warn{color:#fde68a !important}
-body.ui-night .serial-status-error{color:#fca5a5 !important}
 
-/* Keep PDF always white and unchanged even when app is dark/night */
-body.ui-dark #reportPage,
-body.ui-night #reportPage,
-body.ui-dark #pdfStage,
-body.ui-night #pdfStage{
-  background:#ffffff !important;
-  color:#000000 !important;
+/* ===== v12 PDF ITEMS SMART AUTOFIT ONLY - TABLE SHAPE UNCHANGED ===== */
+#reportPage .pdf-item-line{
+  min-height:34px;
+  margin-bottom:4px;
+  overflow:hidden;
 }
-body.ui-dark #reportPage *,
-body.ui-night #reportPage *{
-  color:#000000 !important;
+#reportPage .pdf-desc{
+  font-size:13.4px;
+  line-height:1.10;
 }
-/* ===== end v10 strong dark + night colors ===== */
+#reportPage .pdf-part,
+#reportPage .pdf-serial,
+#reportPage .pdf-manual{
+  font-size:13.2px;
+  line-height:1.10;
+}
+#reportPage .pdf-qty{
+  font-size:13.4px;
+  line-height:1.10;
+}
+/* ===== end v12 pdf items smart autofit ===== */
 
 </style>
 </head><body>
@@ -1162,55 +967,208 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
 
 
 <script>
-/* ===== v10 THEME BUTTON FIX ===== */
+/* ===== v10 PDF ITEMS ALIGNMENT FIX - DIRECT CELL BLOCKS ===== */
 (function(){
-  function applyThemeV10(mode){
-    document.body.classList.remove("ui-light","ui-dark","ui-night","dark-mode","night-mode");
-    if(mode === "dark"){
-      document.body.classList.add("ui-dark");
-    }else if(mode === "night"){
-      document.body.classList.add("ui-night");
-    }else{
-      document.body.classList.add("ui-light");
-    }
-    try{ localStorage.setItem("timeSheetTheme", mode); }catch(e){}
+  const IM_VALUE = "A400-0405 REV";
+  const previousUpdateReport = window.updateReport;
+  const previousCreatePdfBlob = window.createPdfBlob;
+
+  function esc(v){
+    return String(v ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
   }
 
-  window.setTheme = applyThemeV10;
-  window.applyTheme = applyThemeV10;
-  window.changeTheme = applyThemeV10;
+  function getRows(){
+    if(Array.isArray(window.TS_ITEMS_FINAL) && window.TS_ITEMS_FINAL.length) return window.TS_ITEMS_FINAL;
+    try{
+      if(Array.isArray(savedItemRows) && savedItemRows.length) return savedItemRows;
+    }catch(e){}
+    return [];
+  }
 
-  function wireThemeButtons(){
-    const buttons = Array.from(document.querySelectorAll("button, .btn, [onclick]"));
-    buttons.forEach(btn => {
-      const text = (btn.textContent || "").trim().toLowerCase();
-      const old = (btn.getAttribute("onclick") || "").toLowerCase();
+  function setCellHtml(id, html){
+    const el = document.getElementById(id);
+    if(el) el.innerHTML = html;
+  }
 
-      if(text === "light" || text.includes("light") || old.includes("light")){
-        btn.onclick = function(){ applyThemeV10("light"); };
-      }
-      if(text === "dark" || text.includes("dark") || old.includes("dark")){
-        btn.onclick = function(){ applyThemeV10("dark"); };
-      }
-      if(text === "night" || text.includes("night") || old.includes("night")){
-        btn.onclick = function(){ applyThemeV10("night"); };
-      }
+  function line(value, cls){
+    return `<div class="pdf-item-line ${cls || ""}">${esc(value || "")}</div>`;
+  }
+
+  function applyAlignedItemsToPdf(){
+    const rows = getRows().filter(row => row && ["qty","desc","part","serial"].some(k => String(row[k] || "").trim()));
+
+    const qtyHtml = [];
+    const descHtml = [];
+    const partHtml = [];
+    const manualHtml = [];
+    const serialHtml = [];
+
+    rows.forEach((row, index) => {
+      qtyHtml.push(line(row.qty || "", "pdf-qty pdf-center"));
+      descHtml.push(line(row.desc || "", "pdf-desc"));
+      partHtml.push(line(row.part || "", "pdf-part pdf-center"));
+      manualHtml.push(line(index === 0 ? IM_VALUE : "", "pdf-manual pdf-center"));
+      serialHtml.push(line(row.serialRequired === false ? "N/A" : (row.serial || ""), "pdf-serial pdf-center"));
     });
+
+    setCellHtml("outQty", qtyHtml.join(""));
+    setCellHtml("outDesc", descHtml.join(""));
+    setCellHtml("outPart", partHtml.join(""));
+    setCellHtml("outManual", manualHtml.join(""));
+    setCellHtml("outSerial", serialHtml.join(""));
   }
+
+  window.updateReport = function(){
+    if(typeof previousUpdateReport === "function"){
+      previousUpdateReport();
+    }
+    applyAlignedItemsToPdf();
+    if(typeof autoFitReport === "function"){
+      try{ autoFitReport(); }catch(e){}
+    }
+  };
+
+  window.createPdfBlob = async function(){
+    window.updateReport();
+    applyAlignedItemsToPdf();
+    if(typeof previousCreatePdfBlob === "function"){
+      return await previousCreatePdfBlob();
+    }
+    throw new Error("PDF generator is not available.");
+  };
 
   document.addEventListener("DOMContentLoaded", function(){
-    wireThemeButtons();
-    let saved = "light";
-    try{ saved = localStorage.getItem("timeSheetTheme") || "light"; }catch(e){}
-    applyThemeV10(saved);
+    setTimeout(function(){
+      try{
+        applyAlignedItemsToPdf();
+      }catch(e){}
+    }, 350);
   });
+})();
+</script>
 
-  setTimeout(function(){
-    wireThemeButtons();
-    let saved = "light";
-    try{ saved = localStorage.getItem("timeSheetTheme") || "light"; }catch(e){}
-    applyThemeV10(saved);
-  }, 300);
+
+<script>
+/* ===== v11 ENGINEER NAME AUTOFIT - PDF SHAPE UNCHANGED ===== */
+(function(){
+  const prevUpdateReport = window.updateReport;
+  const prevCreatePdfBlob = window.createPdfBlob;
+
+  function fitEngineerNameCell(id){
+    const el = document.getElementById(id);
+    if(!el) return;
+
+    const text = (el.textContent || "").trim();
+    if(!text){
+      el.style.fontSize = "17px";
+      el.style.lineHeight = "1.08";
+      return;
+    }
+
+    const lines = text.split(/\n+/).filter(Boolean).length;
+    let size = lines >= 3 ? 12 : (lines === 2 ? 14.5 : 17);
+    const min = 10;
+
+    el.style.fontSize = size + "px";
+    el.style.lineHeight = lines >= 2 ? "1.04" : "1.08";
+
+    const cell = el.closest("td");
+    if(!cell) return;
+
+    let guard = 0;
+    while((el.scrollHeight > cell.clientHeight - 6 || el.scrollWidth > cell.clientWidth - 8) && size > min && guard < 30){
+      size -= 0.5;
+      el.style.fontSize = size + "px";
+      guard++;
+    }
+  }
+
+  function fitEngineerNames(){
+    fitEngineerNameCell("outBiwEngineerName");
+    fitEngineerNameCell("outEspEngineerName");
+  }
+
+  window.updateReport = function(){
+    if(typeof prevUpdateReport === "function") prevUpdateReport();
+    fitEngineerNames();
+  };
+
+  window.createPdfBlob = async function(){
+    window.updateReport();
+    fitEngineerNames();
+    if(typeof prevCreatePdfBlob === "function"){
+      return await prevCreatePdfBlob();
+    }
+    throw new Error("PDF generator is not available.");
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(fitEngineerNames, 350);
+  });
+})();
+</script>
+
+
+<script>
+/* ===== v12 PDF ITEMS SMART AUTOFIT - TABLE SHAPE UNCHANGED ===== */
+(function(){
+  const prevUpdateReport = window.updateReport;
+  const prevCreatePdfBlob = window.createPdfBlob;
+
+  function fitOneLine(el){
+    if(!el) return;
+
+    const text = (el.textContent || "").trim();
+    const isDesc = el.classList.contains("pdf-desc");
+    const isPart = el.classList.contains("pdf-part");
+    const isSerial = el.classList.contains("pdf-serial");
+    const isQty = el.classList.contains("pdf-qty");
+
+    let size;
+    if(isDesc){
+      size = text.length <= 18 ? 14.2 : text.length <= 34 ? 13.4 : text.length <= 48 ? 12.4 : 11.3;
+    }else if(isPart || isSerial){
+      size = text.length <= 10 ? 14.0 : text.length <= 16 ? 13.2 : 12.0;
+    }else if(isQty){
+      size = 14.0;
+    }else{
+      size = 12.6;
+    }
+
+    const min = isDesc ? 9.4 : 9.8;
+    el.style.fontSize = size + "px";
+    el.style.lineHeight = isDesc ? "1.08" : "1.10";
+    el.style.minHeight = "34px";
+
+    let guard = 0;
+    while((el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth) && size > min && guard < 30){
+      size -= 0.4;
+      el.style.fontSize = size + "px";
+      guard++;
+    }
+  }
+
+  function fitPdfItems(){
+    document.querySelectorAll("#reportPage .pdf-item-line").forEach(fitOneLine);
+  }
+
+  window.updateReport = function(){
+    if(typeof prevUpdateReport === "function") prevUpdateReport();
+    fitPdfItems();
+  };
+
+  window.createPdfBlob = async function(){
+    window.updateReport();
+    fitPdfItems();
+    if(typeof prevCreatePdfBlob === "function"){
+      return await prevCreatePdfBlob();
+    }
+    throw new Error("PDF generator is not available.");
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(fitPdfItems, 400);
+  });
 })();
 </script>
 
