@@ -13,7 +13,35 @@
 
 .pn-options{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pn-option{border:1px solid #cfd6df;background:#fff;color:#111827;border-radius:9px;padding:8px 10px;font-size:12px;font-weight:900;cursor:pointer}.pn-option.active{background:#111827;color:#fff;border-color:#111827}.pn-no-result{font-size:12px;font-weight:900;color:#991b1b;margin-top:8px}.pn-description-preview{margin-top:7px;padding:8px;border-radius:9px;background:#eef2ff;color:#374151;font-size:11px;font-weight:900;line-height:1.25}.theme-dark .pn-option,.theme-night .pn-option{background:#111827;color:#f9fafb;border-color:#4b5563}.theme-dark .pn-option.active,.theme-night .pn-option.active{background:#38bdf8;color:#082f49;border-color:#38bdf8}.theme-dark .pn-description-preview,.theme-night .pn-description-preview{background:#1f2937;color:#e5e7eb}
 
-/* ===== v5 INPUT UI FIX ONLY - PDF LAYOUT UNCHANGED ===== */
+/* ===== v6 PDF TEXT BREATHING SPACE ONLY - STRUCTURE UNCHANGED ===== */
+#reportPage .cell{
+  padding:8px 11px !important;
+}
+#reportPage .report-value{
+  padding-left:3px !important;
+  padding-right:3px !important;
+  box-sizing:border-box !important;
+}
+#reportPage .report-items-cell{
+  padding:9px 11px !important;
+}
+#reportPage .small-header,
+#reportPage .company-header,
+#reportPage .name-label,
+#reportPage .sign-label-text,
+#reportPage .comment-label{
+  padding:8px 11px !important;
+}
+#reportPage .engineer-names{
+  padding:6px 10px !important;
+}
+#reportPage .items-table th{
+  padding:6px 8px !important;
+}
+/* ===== end v6 pdf text breathing space ===== */
+
+
+/* ===== v7 INPUT UI + DARK/NIGHT FIX ONLY - PDF STRUCTURE UNCHANGED ===== */
 .item-editor-row{
   background:linear-gradient(180deg,#ffffff,#f8fafc);
   border:1px solid rgba(15,23,42,.12);
@@ -31,21 +59,14 @@
   padding-bottom:10px;
   border-bottom:1px solid rgba(148,163,184,.35);
 }
-.item-row-title{
-  font-weight:900;
-  font-size:15px;
-  color:#0f172a;
-}
-.item-row-grid,
-.item-row-grid.manual-mode{
+.item-row-title{font-weight:900;font-size:15px;color:#0f172a}
+.item-row-grid,.item-row-grid.manual-mode{
   display:grid;
   grid-template-columns:90px minmax(260px,2fr) minmax(150px,1fr) minmax(180px,1.2fr);
   gap:14px;
   align-items:start;
 }
-.item-mini-field{
-  min-width:0;
-}
+.item-mini-field{min-width:0}
 .item-mini-field label{
   display:block;
   font-size:11px;
@@ -54,29 +75,11 @@
   margin-bottom:6px;
   letter-spacing:.02em;
 }
-.item-mini-field input,
-.item-mini-field select{
+.item-mini-field input,.item-mini-field select{
   min-height:44px;
   font-size:14px;
   padding:9px 10px;
   border-radius:12px;
-}
-.item-desc-card{
-  min-height:70px;
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  background:#ffffff;
-  padding:10px 11px;
-  font-size:13px;
-  font-weight:900;
-  line-height:1.28;
-  color:#111827;
-  white-space:normal;
-  word-break:break-word;
-}
-.item-desc-card.empty{
-  color:#94a3b8;
-  font-weight:800;
 }
 .item-part-card{
   margin-top:7px;
@@ -127,77 +130,103 @@
   font-weight:900;
   color:#2563eb;
 }
-.serial-status-ok{
-  margin-top:6px;
-  color:#15803d;
-  font-size:12px;
-  font-weight:900;
+.serial-status-ok{margin-top:6px;color:#15803d;font-size:12px;font-weight:900}
+.serial-status-warn{margin-top:6px;color:#b45309;font-size:12px;font-weight:900}
+.serial-status-error{margin-top:6px;color:#b91c1c;font-size:12px;font-weight:900}
+
+/* Dark/Night: make every input card readable. This is input UI only. */
+body.ui-dark,
+body.ui-night{color:#e5e7eb}
+body.ui-dark .input-panel,
+body.ui-dark .form-section,
+body.ui-dark .modal-box,
+body.ui-dark .item-editor-row,
+body.ui-night .input-panel,
+body.ui-night .form-section,
+body.ui-night .modal-box,
+body.ui-night .item-editor-row{
+  background:#0f172a !important;
+  color:#e5e7eb !important;
+  border-color:#334155 !important;
 }
-.serial-status-warn{
-  margin-top:6px;
-  color:#b45309;
-  font-size:12px;
-  font-weight:900;
+body.ui-night .input-panel,
+body.ui-night .form-section,
+body.ui-night .modal-box,
+body.ui-night .item-editor-row{
+  background:#020617 !important;
 }
-.serial-status-error{
-  margin-top:6px;
-  color:#b91c1c;
-  font-size:12px;
-  font-weight:900;
+body.ui-dark input,
+body.ui-dark textarea,
+body.ui-dark select,
+body.ui-dark .select-card,
+body.ui-dark .auto-value,
+body.ui-dark .auto-readonly,
+body.ui-dark .item-results-box,
+body.ui-dark .item-result-btn,
+body.ui-night input,
+body.ui-night textarea,
+body.ui-night select,
+body.ui-night .select-card,
+body.ui-night .auto-value,
+body.ui-night .auto-readonly,
+body.ui-night .item-results-box,
+body.ui-night .item-result-btn{
+  background:#111827 !important;
+  color:#f8fafc !important;
+  border-color:#475569 !important;
 }
-body.dark-mode .item-editor-row,
-body.night-mode .item-editor-row{
-  background:linear-gradient(180deg,#111827,#0f172a);
-  border-color:rgba(148,163,184,.35);
+body.ui-night input,
+body.ui-night textarea,
+body.ui-night select,
+body.ui-night .select-card,
+body.ui-night .auto-value,
+body.ui-night .auto-readonly,
+body.ui-night .item-results-box,
+body.ui-night .item-result-btn{
+  background:#020617 !important;
 }
-body.dark-mode .item-row-title,
-body.night-mode .item-row-title{color:#f8fafc}
-body.dark-mode .item-desc-card,
-body.night-mode .item-desc-card,
-body.dark-mode .item-results-box,
-body.night-mode .item-results-box,
-body.dark-mode .item-result-btn{background:#0b1220;color:#f8fafc;border-color:#334155}
-body.dark-mode .item-result-btn:hover,
-body.night-mode .item-result-btn:hover{background:#1e293b}
-body.dark-mode .item-part-card,
-body.night-mode .item-part-card{background:#172554;color:#dbeafe}
+body.ui-dark input::placeholder,
+body.ui-dark textarea::placeholder,
+body.ui-night input::placeholder,
+body.ui-night textarea::placeholder{color:#94a3b8 !important}
+body.ui-dark label,
+body.ui-dark .section-title-wrap p,
+body.ui-dark .input-note,
+body.ui-dark .items-display-sub,
+body.ui-dark .required-hint,
+body.ui-dark .modal-field label,
+body.ui-dark .item-mini-field label,
+body.ui-night label,
+body.ui-night .section-title-wrap p,
+body.ui-night .input-note,
+body.ui-night .items-display-sub,
+body.ui-night .required-hint,
+body.ui-night .modal-field label,
+body.ui-night .item-mini-field label{color:#cbd5e1 !important}
+body.ui-dark .item-row-title,
+body.ui-dark .input-title,
+body.ui-dark h3,
+body.ui-dark .item-result-desc,
+body.ui-night .item-row-title,
+body.ui-night .input-title,
+body.ui-night h3,
+body.ui-night .item-result-desc{color:#f8fafc !important}
+body.ui-dark .item-result-btn:hover,
+body.ui-night .item-result-btn:hover{background:#1e293b !important}
+body.ui-dark .item-part-card,
+body.ui-night .item-part-card{
+  background:#172554 !important;
+  color:#dbeafe !important;
+}
+body.ui-dark .btn-secondary,
+body.ui-night .btn-secondary{
+  background:#334155 !important;
+  color:#f8fafc !important;
+}
 @media(max-width:760px){
-  .item-row-grid,
-  .item-row-grid.manual-mode{
-    grid-template-columns:1fr;
-    gap:12px;
-  }
-  .item-desc-card{min-height:56px}
+  .item-row-grid,.item-row-grid.manual-mode{grid-template-columns:1fr;gap:12px}
 }
-/* ===== end v5 input fix ===== */
-
-
-/* ===== v6 PDF TEXT BREATHING SPACE ONLY - STRUCTURE UNCHANGED ===== */
-#reportPage .cell{
-  padding:8px 11px !important;
-}
-#reportPage .report-value{
-  padding-left:3px !important;
-  padding-right:3px !important;
-  box-sizing:border-box !important;
-}
-#reportPage .report-items-cell{
-  padding:9px 11px !important;
-}
-#reportPage .small-header,
-#reportPage .company-header,
-#reportPage .name-label,
-#reportPage .sign-label-text,
-#reportPage .comment-label{
-  padding:8px 11px !important;
-}
-#reportPage .engineer-names{
-  padding:6px 10px !important;
-}
-#reportPage .items-table th{
-  padding:6px 8px !important;
-}
-/* ===== end v6 pdf text breathing space ===== */
+/* ===== end v7 input ui + theme fix ===== */
 
 </style>
 </head><body>
@@ -335,345 +364,301 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
 </script>
 
 
+
 <script>
-/* ===== v5 ITEMS UI OVERRIDE - INPUT ONLY, PDF UNCHANGED ===== */
+/* ===== v7 ITEMS FIX - USE ORIGINAL SAVED ROWS, PDF UNCHANGED ===== */
 (function(){
-  const ITEM_CATALOG_V5 = [
-    {description:"UNI-LOK PRESSURE BLOCK ASSY 5000PSI", partNumber:"ULK55-04", serialRequired:true},
-    {description:"UNI-LOK PRESSURE BLOCK ASSY 5000PSI", partNumber:"ULK55-02", serialRequired:true},
-    {description:"PKR FEEDTHRU TRU-LOK FA 120#2 OR 4FL", partNumber:"SPT120-F99-F99", serialRequired:true},
-    {description:"UNI-LOK SURFACE CONN CID2 SD", partNumber:"ULK5302-CD2", serialRequired:true},
-    {description:"BOOT SEAL", partNumber:"P300-0220-40", serialRequired:false},
-    {description:"ASSY FEEDTHRU ADAPTER UNI-LOK HEM15333-0", partNumber:"P175-0089", serialRequired:true},
-    {description:"FITTINGS", partNumber:"A125-0047", serialRequired:false},
-    {description:"TRU-LOK WH FEEDTHRU FLAT GENERIC", partNumber:"TLK0077160-F99", serialRequired:true},
-    {description:"TRU-LOK SURF CONN C1D2 SD", partNumber:"TLK5302-CD2", serialRequired:true},
-    {description:"BRACKET", partNumber:"P152-0301", serialRequired:false}
+  const CATALOG = [
+    {desc:"UNI-LOK PRESSURE BLOCK ASSY 5000PSI", part:"ULK55-04", serialRequired:true},
+    {desc:"UNI-LOK PRESSURE BLOCK ASSY 5000PSI", part:"ULK55-02", serialRequired:true},
+    {desc:"PKR FEEDTHRU TRU-LOK FA 120#2 OR 4FL", part:"SPT120-F99-F99", serialRequired:true},
+    {desc:"UNI-LOK SURFACE CONN CID2 SD", part:"ULK5302-CD2", serialRequired:true},
+    {desc:"BOOT SEAL", part:"P300-0220-40", serialRequired:false},
+    {desc:"ASSY FEEDTHRU ADAPTER UNI-LOK HEM15333-0", part:"P175-0089", serialRequired:true},
+    {desc:"FITTINGS", part:"A125-0047", serialRequired:false},
+    {desc:"TRU-LOK WH FEEDTHRU FLAT GENERIC", part:"TLK0077160-F99", serialRequired:true},
+    {desc:"TRU-LOK SURF CONN C1D2 SD", part:"TLK5302-CD2", serialRequired:true},
+    {desc:"BRACKET", part:"P152-0301", serialRequired:false}
   ];
+  const MANUAL_VALUE = "A400-0405 REV";
 
   function esc(v){
-    return String(v ?? "").replace(/[&<>"']/g, function(ch){
-      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch];
-    });
+    return String(v ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
   }
-
-  function getItems(){
-    if(!Array.isArray(window.itemsData)) window.itemsData = [];
-    return window.itemsData;
+  function ensureArrays(){
+    if(!Array.isArray(window.savedItemRows)) window.savedItemRows = [];
+    if(!Array.isArray(window.draftItemRows)) window.draftItemRows = [];
   }
-
+  function copyRows(rows){
+    return (rows || []).map(r => ({...r}));
+  }
+  function blankRow(){
+    return {manualMode:false,savedIndex:"",qty:"",desc:"",part:"",manual:"",serial:"",serialRequired:true};
+  }
   function normalizeSerial(raw){
     const digits = String(raw || "").replace(/\D/g,"").slice(0,12);
-    if(digits.length > 6) return digits.slice(0,6) + "/" + digits.slice(6);
-    return digits;
+    return digits.length > 6 ? digits.slice(0,6) + "/" + digits.slice(6) : digits;
   }
-
-  function serialState(value){
-    const v = String(value || "").trim();
+  function validSerial(v){
+    v = String(v || "").trim();
+    return /^\d{6}$/.test(v) || /^\d{6}\/\d{6}$/.test(v);
+  }
+  function serialState(row){
+    if(row.serialRequired === false) return {cls:"serial-status-ok", text:"N/A"};
+    const v = String(row.serial || "").trim();
     if(!v) return {cls:"serial-status-warn", text:"Enter 6 digits. For two serials, enter 12 digits."};
-    const parts = v.split("/");
-    const ok = (parts.length === 1 && /^\d{6}$/.test(parts[0])) ||
-               (parts.length === 2 && /^\d{6}$/.test(parts[0]) && /^\d{6}$/.test(parts[1]));
-    if(ok) return {cls:"serial-status-ok", text:"تم"};
+    if(validSerial(v)) return {cls:"serial-status-ok", text:"تم"};
     return {cls:"serial-status-error", text:"Serial Number must be 6 digits, or 12 digits for two serials."};
   }
 
-  function rebuildItemsEditor(){
+  window.openItemsModal = function(){
+    ensureArrays();
+    window.draftItemRows = copyRows(window.savedItemRows);
+    if(!window.draftItemRows.length) window.draftItemRows = [blankRow()];
+    renderItemEditorRows();
+    const modal = document.getElementById("itemsModal");
+    if(modal) modal.classList.add("active");
+  };
+
+  window.renderItemEditorRows = function(){
+    ensureArrays();
     const editor = document.getElementById("itemsEditor");
     if(!editor) return;
-    const items = getItems();
-    if(!items.length){
-      items.push({qty:"",description:"",partNumber:"",manual:"",serial:"",serialRequired:true, manualEntry:false});
-    }
-    editor.innerHTML = items.map((it, idx) => {
-      const isManual = !!it.manualEntry;
-      const descText = it.description || "";
-      const partText = it.partNumber || "";
-      const serialRequired = it.serialRequired !== false;
-      const status = serialRequired ? serialState(it.serial) : {cls:"serial-status-ok", text:"N/A"};
+    if(!window.draftItemRows.length) window.draftItemRows = [blankRow()];
+    editor.innerHTML = window.draftItemRows.map((row, index) => {
+      row.serialRequired = row.serialRequired !== false;
+      const manual = !!row.manualMode;
+      const state = serialState(row);
       return `
-        <div class="item-editor-row" data-index="${idx}">
-          <div class="item-row-top">
-            <div class="item-row-title">Item ${idx + 1}</div>
-            <button class="item-remove-btn" type="button" onclick="removeItemEditorRow(${idx})">Remove</button>
+      <div class="item-editor-row" data-index="${index}">
+        <div class="item-row-top">
+          <div class="item-row-title">Item ${index + 1}</div>
+          <button class="item-remove-btn" type="button" onclick="removeItemEditorRow(${index})">Remove</button>
+        </div>
+
+        <label class="item-mode-line">
+          <input type="checkbox" ${manual ? "checked" : ""} onchange="updateDraftItemV7(${index}, 'manualMode', this.checked)">
+          Manual Entry for item not saved
+        </label>
+
+        <div class="item-row-grid ${manual ? "manual-mode" : ""}">
+          <div class="item-mini-field">
+            <label>Quantity</label>
+            <input type="number" min="1" inputmode="numeric" value="${esc(row.qty || "")}" oninput="updateDraftItemV7(${index}, 'qty', this.value)" placeholder="1">
           </div>
 
-          <label class="item-mode-line">
-            <input type="checkbox" ${isManual ? "checked" : ""} onchange="toggleManualItemV5(${idx}, this.checked)">
-            Manual Entry
-          </label>
-
-          <div class="item-row-grid ${isManual ? "manual-mode" : ""}">
-            <div class="item-mini-field">
-              <label>Quantity</label>
-              <input type="number" min="1" inputmode="numeric" value="${esc(it.qty || "")}" oninput="updateItemFieldV5(${idx}, 'qty', this.value)" placeholder="Qty">
-            </div>
-
-            <div class="item-mini-field">
-              <label>${isManual ? "Description" : "Search Description"}</label>
-              ${isManual ? `
-                <input value="${esc(descText)}" oninput="updateItemFieldV5(${idx}, 'description', this.value)" placeholder="Type Description">
-              ` : `
-                <input value="${esc(descText)}" oninput="searchDescriptionV5(${idx}, this.value)" onfocus="searchDescriptionV5(${idx}, this.value)" placeholder="Type Description">
-                <div id="itemResultsV5_${idx}" class="item-results-box"></div>
-                <div class="item-part-card">${partText ? "Part Number: " + esc(partText) : "Part Number will appear here"}</div>
-              `}
-            </div>
-
-            <div class="item-mini-field">
-              <label>Part Number</label>
-              <input class="${isManual ? "" : "auto-readonly"}" value="${esc(partText)}" ${isManual ? `oninput="updateItemFieldV5(${idx}, 'partNumber', this.value)"` : "readonly"} placeholder="Part Number">
-            </div>
-
-            <div class="item-mini-field">
-              <label>Serial Number</label>
-              ${serialRequired ? `
-                <input inputmode="numeric" value="${esc(it.serial || "")}" oninput="updateSerialV5(${idx}, this.value)" placeholder="123456 or 123456/654321">
-                <div class="${status.cls}">${status.text}</div>
-              ` : `
-                <input class="auto-readonly" value="N/A" readonly>
-                <div class="${status.cls}">N/A</div>
-              `}
-            </div>
+          <div class="item-mini-field">
+            <label>${manual ? "Description" : "Search Description"}</label>
+            ${manual ? `
+              <input value="${esc(row.desc || "")}" oninput="updateDraftItemV7(${index}, 'desc', this.value)" placeholder="Type Description">
+            ` : `
+              <input value="${esc(row.desc || "")}" oninput="searchDescriptionV7(${index}, this.value)" onfocus="searchDescriptionV7(${index}, this.value)" placeholder="Type Description">
+              <div id="itemResultsV7_${index}" class="item-results-box"></div>
+              <div class="item-part-card">${row.part ? "Part Number: " + esc(row.part) : "Part Number will appear here"}</div>
+            `}
           </div>
-        </div>`;
+
+          <div class="item-mini-field">
+            <label>Part Number</label>
+            <input class="${manual ? "" : "auto-readonly"}" value="${esc(row.part || "")}" ${manual ? `oninput="updateDraftItemV7(${index}, 'part', this.value)"` : "readonly"} placeholder="Part Number">
+          </div>
+
+          <div class="item-mini-field">
+            <label>Serial Number</label>
+            ${row.serialRequired === false ? `
+              <input class="auto-readonly" value="N/A" readonly>
+              <div class="serial-status-ok">N/A</div>
+            ` : `
+              <input inputmode="numeric" pattern="[0-9/]*" value="${esc(row.serial || "")}" oninput="updateSerialV7(${index}, this.value)" placeholder="123456 or 123456/654321">
+              <div class="${state.cls}">${state.text}</div>
+            `}
+          </div>
+        </div>
+      </div>`;
     }).join("");
-  }
+  };
 
-  window.searchDescriptionV5 = function(index, value){
-    const items = getItems();
-    const it = items[index];
-    if(!it) return;
-    it.description = value;
-    it.partNumber = "";
-    it.serialRequired = true;
-    it.serial = "";
-    const box = document.getElementById("itemResultsV5_" + index);
+  window.searchDescriptionV7 = function(index, value){
+    ensureArrays();
+    const row = window.draftItemRows[index];
+    if(!row) return;
+    row.desc = value;
+    row.part = "";
+    row.savedIndex = "";
+    row.serialRequired = true;
+    row.serial = "";
+    const box = document.getElementById("itemResultsV7_" + index);
     if(!box) return;
     const q = String(value || "").trim().toLowerCase();
-    let results = ITEM_CATALOG_V5;
-    if(q){
-      results = ITEM_CATALOG_V5.filter(x =>
-        x.description.toLowerCase().includes(q) || x.partNumber.toLowerCase().includes(q)
-      );
-    }
-    box.innerHTML = results.map(x => `
-      <button class="item-result-btn" type="button" onclick="selectCatalogItemV5(${index}, '${esc(x.partNumber)}')">
-        <span class="item-result-desc">${esc(x.description)}</span>
-        <span class="item-result-pn">${esc(x.partNumber)}</span>
+    const results = q
+      ? CATALOG.filter(x => x.desc.toLowerCase().includes(q) || x.part.toLowerCase().includes(q))
+      : CATALOG;
+    box.innerHTML = results.map((x) => `
+      <button class="item-result-btn" type="button" onclick="selectCatalogItemV7(${index}, '${esc(x.part)}')">
+        <span class="item-result-desc">${esc(x.desc)}</span>
+        <span class="item-result-pn">${esc(x.part)}</span>
       </button>
     `).join("");
     box.classList.toggle("active", results.length > 0);
-    saveDraftV5();
   };
 
-  window.selectCatalogItemV5 = function(index, partNumber){
-    const item = ITEM_CATALOG_V5.find(x => x.partNumber === partNumber);
-    const items = getItems();
-    if(!item || !items[index]) return;
-    items[index] = {
-      ...items[index],
-      qty: items[index].qty || "",
-      description: item.description,
-      partNumber: item.partNumber,
-      serialRequired: !!item.serialRequired,
-      serial: item.serialRequired ? "" : "N/A",
-      manual: ""
+  window.selectCatalogItemV7 = function(index, part){
+    ensureArrays();
+    const item = CATALOG.find(x => x.part === part);
+    if(!item || !window.draftItemRows[index]) return;
+    const catalogIndex = CATALOG.findIndex(x => x.part === part);
+    window.draftItemRows[index] = {
+      ...window.draftItemRows[index],
+      manualMode:false,
+      savedIndex:String(catalogIndex),
+      desc:item.desc,
+      part:item.part,
+      manual:"",
+      serialRequired:!!item.serialRequired,
+      serial:item.serialRequired ? "" : "N/A"
     };
-    rebuildItemsEditor();
-    updateItemsSummaryV5();
-    saveDraftV5();
+    renderItemEditorRows();
   };
 
-  window.updateItemFieldV5 = function(index, field, value){
-    const items = getItems();
-    if(!items[index]) return;
-    items[index][field] = value;
-    updateItemsSummaryV5();
-    saveDraftV5();
-  };
-
-  window.updateSerialV5 = function(index, value){
-    const items = getItems();
-    if(!items[index]) return;
-    items[index].serial = normalizeSerial(value);
-    rebuildItemsEditor();
-    const row = document.querySelector(`.item-editor-row[data-index="${index}"] input[placeholder*="123456"]`);
-    if(row){
-      row.focus();
-      const len = row.value.length;
-      row.setSelectionRange(len, len);
+  window.updateDraftItemV7 = function(index, field, value){
+    ensureArrays();
+    const row = window.draftItemRows[index];
+    if(!row) return;
+    if(field === "manualMode"){
+      row.manualMode = !!value;
+      row.savedIndex = "";
+      row.serialRequired = true;
+      if(row.serial === "N/A") row.serial = "";
+      if(!value){
+        row.desc = "";
+        row.part = "";
+        row.serial = "";
+      }
+      renderItemEditorRows();
+      return;
     }
-    updateItemsSummaryV5();
-    saveDraftV5();
+    row[field] = value;
   };
 
-  window.toggleManualItemV5 = function(index, checked){
-    const items = getItems();
-    if(!items[index]) return;
-    items[index].manualEntry = checked;
-    if(checked){
-      items[index].serialRequired = true;
-      if(items[index].serial === "N/A") items[index].serial = "";
-    } else {
-      items[index].description = "";
-      items[index].partNumber = "";
-      items[index].serialRequired = true;
-      items[index].serial = "";
+  window.updateSerialV7 = function(index, value){
+    ensureArrays();
+    const row = window.draftItemRows[index];
+    if(!row) return;
+    row.serial = normalizeSerial(value);
+    renderItemEditorRows();
+    const input = document.querySelector(`.item-editor-row[data-index="${index}"] input[placeholder*="123456"]`);
+    if(input){
+      input.focus();
+      const p = input.value.length;
+      input.setSelectionRange(p,p);
     }
-    rebuildItemsEditor();
-    updateItemsSummaryV5();
-    saveDraftV5();
   };
 
   window.addItemEditorRow = function(){
-    getItems().push({qty:"",description:"",partNumber:"",manual:"",serial:"",serialRequired:true,manualEntry:false});
-    rebuildItemsEditor();
-    updateItemsSummaryV5();
-    saveDraftV5();
+    ensureArrays();
+    window.draftItemRows.push(blankRow());
+    renderItemEditorRows();
   };
 
   window.removeItemEditorRow = function(index){
-    const items = getItems();
-    items.splice(index,1);
-    if(!items.length) items.push({qty:"",description:"",partNumber:"",manual:"",serial:"",serialRequired:true,manualEntry:false});
-    rebuildItemsEditor();
-    updateItemsSummaryV5();
-    saveDraftV5();
+    ensureArrays();
+    window.draftItemRows.splice(index,1);
+    if(!window.draftItemRows.length) window.draftItemRows = [blankRow()];
+    renderItemEditorRows();
   };
-
-  function cleanItems(){
-    return getItems().filter(x => String(x.qty||"").trim() || String(x.description||"").trim() || String(x.partNumber||"").trim() || String(x.serial||"").trim());
-  }
-
-  function updateItemsSummaryV5(){
-    const summary = document.getElementById("itemsSummary");
-    const display = document.getElementById("itemsDisplay");
-    const countEls = document.querySelectorAll("[data-items-count]");
-    const items = cleanItems();
-    countEls.forEach(el => el.textContent = String(items.length));
-    if(!summary) return;
-    if(!items.length){
-      summary.textContent = "No items added yet.";
-      if(display) display.classList.add("placeholder");
-      return;
-    }
-    if(display) display.classList.remove("placeholder");
-    summary.textContent = items.map((it, i) => {
-      const sn = it.serialRequired === false ? "N/A" : (it.serial || "S/N required");
-      return `${i+1}. Qty: ${it.qty || "-"} | ${it.description || "-"} | ${it.partNumber || "-"} | S/N: ${sn}`;
-    }).join("\n");
-  }
 
   window.saveItemsSelection = function(){
-    updateItemsSummaryV5();
-    if(typeof closeItemsModal === "function") closeItemsModal();
-    saveDraftV5();
-  };
+    ensureArrays();
+    const normalized = window.draftItemRows.map((row, index) => {
+      const empty = !String(row.qty||"").trim() && !String(row.desc||"").trim() && !String(row.part||"").trim() && !String(row.serial||"").trim();
+      if(empty) return null;
+      const serialRequired = row.serialRequired !== false;
+      return {
+        manualMode:!!row.manualMode,
+        savedIndex:row.savedIndex || "",
+        qty:String(row.qty || "").trim() || "1",
+        desc:String(row.desc || "").trim(),
+        part:String(row.part || "").trim(),
+        manual:index === 0 ? MANUAL_VALUE : "",
+        serial:serialRequired ? String(row.serial || "").trim() : "N/A",
+        serialRequired:serialRequired
+      };
+    }).filter(Boolean);
 
-  window.openItemsModal = function(){
-    const modal = document.getElementById("itemsModal");
-    if(modal) modal.classList.add("active");
-    rebuildItemsEditor();
-  };
-
-  window.clearItemsV5 = function(){
-    if(!confirm("Clear all Items?")) return;
-    window.itemsData = [];
-    rebuildItemsEditor();
-    updateItemsSummaryV5();
-    saveDraftV5();
-  };
-
-  function saveDraftV5(){
-    try{
-      const payload = { itemsData: getItems() };
-      localStorage.setItem("timeSheetItemsV5", JSON.stringify(payload));
-    }catch(e){}
-  }
-
-  function loadDraftV5(){
-    try{
-      const raw = localStorage.getItem("timeSheetItemsV5");
-      if(!raw) return;
-      const payload = JSON.parse(raw);
-      if(Array.isArray(payload.itemsData) && payload.itemsData.length){
-        window.itemsData = payload.itemsData;
+    for(let i=0;i<normalized.length;i++){
+      const row = normalized[i];
+      if(!row.qty || !row.desc || !row.part){
+        alert("Item " + (i+1) + ": Quantity, Description, and Part Number are required.");
+        return;
       }
-    }catch(e){}
-  }
+      if(row.serialRequired && !validSerial(row.serial)){
+        alert("Item " + (i+1) + ": Serial Number must be 6 digits, or 12 digits for two serials.");
+        return;
+      }
+    }
 
-  function validateItemsV5(){
-    const items = cleanItems();
+    window.savedItemRows = normalized;
+    updateItemsDisplay();
+    if(typeof updateReport === "function") updateReport();
+    if(typeof updateItemCounter === "function") updateItemCounter();
+    if(typeof saveTimeSheetDraft === "function") saveTimeSheetDraft();
+    if(typeof closeItemsModal === "function") closeItemsModal();
+  };
+
+  window.updateItemsDisplay = function(){
+    ensureArrays();
+    const display = document.getElementById("itemsDisplay");
+    const summary = document.getElementById("itemsSummary");
+    if(!display || !summary) return;
+    if(!window.savedItemRows.length){
+      display.classList.add("placeholder");
+      display.innerHTML = `<div class="items-display-title">اضغط لإضافة الأغراض</div><div class="items-display-sub">Search by Description. Part Number fills automatically.</div>`;
+      summary.textContent = "No items added yet.";
+      return;
+    }
+    display.classList.remove("placeholder");
+    display.innerHTML = `<div class="items-display-title">${window.savedItemRows.length} item(s) added</div><div class="items-display-sub">Tap to review or edit items.</div>`;
+    summary.textContent = window.savedItemRows.map((row,i) => {
+      const manual = i === 0 ? MANUAL_VALUE : "";
+      return `${i+1}. Qty: ${row.qty || "-"} | ${row.desc || "-"} | ${row.part || "-"} | ${manual} | ${row.serial || "-"}`;
+    }).join("\n");
+  };
+
+  const oldValidate = window.validateBeforePDF;
+  window.validateBeforePDF = function(){
+    if(typeof oldValidate === "function") oldValidate();
+    ensureArrays();
     const errors = [];
-    items.forEach((it, idx) => {
-      if(!String(it.qty || "").trim()) errors.push(`Item ${idx+1}: Quantity is required.`);
-      if(!String(it.description || "").trim()) errors.push(`Item ${idx+1}: Description is required.`);
-      if(!String(it.partNumber || "").trim()) errors.push(`Item ${idx+1}: Part Number is required.`);
-      if(it.serialRequired !== false){
-        const v = String(it.serial || "").trim();
-        const ok = (/^\d{6}$/.test(v) || /^\d{6}\/\d{6}$/.test(v));
-        if(!ok) errors.push(`Item ${idx+1}: Serial Number must be 6 digits or 12 digits for two serials.`);
+    window.savedItemRows.forEach((row,i) => {
+      if(row.serialRequired && !validSerial(row.serial)){
+        errors.push("Item " + (i+1) + ": Serial Number must be 6 digits, or 12 digits for two serials.");
       }
     });
-    return errors;
-  }
-
-  const oldDownload = window.downloadPDF;
-  const oldShare = window.sharePDF;
-  function showValidation(errors){
-    const box = document.getElementById("validationHint");
-    if(box){
-      box.innerHTML = errors.join("<br>");
-      box.classList.add("active");
-      box.scrollIntoView({behavior:"smooth", block:"center"});
-    } else {
-      alert(errors.join("\n"));
+    if(errors.length){
+      const hint = document.getElementById("validationHint");
+      const msg = errors.join("\n");
+      if(hint){ hint.textContent = msg; hint.classList.add("active"); }
+      alert(msg);
+      throw new Error(msg);
     }
-  }
-  window.downloadPDF = function(){
-    const errors = validateItemsV5();
-    if(errors.length){ showValidation(errors); return; }
-    if(typeof oldDownload === "function") return oldDownload.apply(this, arguments);
   };
-  window.sharePDF = function(){
-    const errors = validateItemsV5();
-    if(errors.length){ showValidation(errors); return; }
-    if(typeof oldShare === "function") return oldShare.apply(this, arguments);
-  };
-
-  function patchButtons(){
-    const sec = document.getElementById("section-items");
-    if(sec && !document.getElementById("clearItemsV5Btn")){
-      const btn = document.createElement("button");
-      btn.id = "clearItemsV5Btn";
-      btn.type = "button";
-      btn.className = "btn btn-secondary";
-      btn.textContent = "Clear Items";
-      btn.onclick = window.clearItemsV5;
-      sec.appendChild(btn);
-    }
-    const title = sec ? sec.querySelector("h3") : null;
-    if(title && !title.querySelector("[data-items-count]")){
-      title.innerHTML = title.innerHTML + ' <span style="font-size:12px;color:#64748b">(<span data-items-count>0</span>)</span>';
-    }
-  }
 
   document.addEventListener("click", function(e){
     document.querySelectorAll(".item-results-box.active").forEach(box => {
-      if(!box.closest(".item-mini-field")?.contains(e.target)) box.classList.remove("active");
+      const field = box.closest(".item-mini-field");
+      if(field && !field.contains(e.target)) box.classList.remove("active");
     });
   });
 
   document.addEventListener("DOMContentLoaded", function(){
-    loadDraftV5();
-    patchButtons();
-    updateItemsSummaryV5();
+    ensureArrays();
+    updateItemsDisplay();
+    if(typeof updateItemCounter === "function") updateItemCounter();
   });
   setTimeout(function(){
-    loadDraftV5();
-    patchButtons();
-    updateItemsSummaryV5();
+    ensureArrays();
+    updateItemsDisplay();
+    if(typeof updateItemCounter === "function") updateItemCounter();
   }, 300);
 })();
 </script>
