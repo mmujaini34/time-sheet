@@ -404,6 +404,35 @@ body.ui-night .serial-status-warn{
 }
 /* ===== end v16 night orange accent ===== */
 
+
+/* ===== v17 FINAL PDF ITEMS ROW SPACING ONLY - NO COLOR/UI CHANGE ===== */
+#reportPage .report-items-cell{
+  vertical-align:top !important;
+  padding:9px 10px !important;
+  white-space:normal !important;
+  word-break:break-word !important;
+}
+#reportPage .ts-pdf-item-row{
+  display:block !important;
+  min-height:62px !important;
+  margin:0 0 10px 0 !important;
+  padding:0 2px !important;
+  line-height:1.12 !important;
+  overflow:hidden !important;
+  white-space:normal !important;
+  word-break:break-word !important;
+}
+#reportPage .ts-pdf-item-row.ts-center{
+  text-align:center !important;
+}
+#reportPage .ts-pdf-item-row.ts-left{
+  text-align:left !important;
+}
+#reportPage .ts-pdf-item-row:last-child{
+  margin-bottom:0 !important;
+}
+/* ===== end v17 final pdf items row spacing ===== */
+
 </style>
 </head><body>
 <div class="app-shell"><div class="input-panel"><h1 class="input-title">Installation Time Sheet</h1><p class="input-note">واجهة إدخال منظمة. املأ البيانات ثم اختر Download PDF أو Share PDF. التقرير النهائي PDF يبقى إنجليزي فقط.</p><div class="form-section" id="section-job-info"><div class="section-head"><div class="step-badge">1</div><div class="section-title-wrap"><h3>تسجيل المعلومات / Job Information</h3><p>يمكن إنشاء PDF في أي وقت، حتى لو بعض الخانات فاضية.</p></div></div><div class="job-grid"><div class="form-field"><label>Client</label><div id="clientDisplay" class="select-card placeholder" onclick="openClientModal()">اضغط لاختيار Client / Company</div><div class="required-hint">Required: Client + Company</div><input id="clientInput" type="hidden"><input id="companyInput" type="hidden"></div><div class="form-field"><label>Date</label><div id="dateDisplay" class="select-card placeholder" onclick="openDateModal()">اضغط لاختيار فترة التاريخ</div><input id="dateFromInput" type="hidden"><input id="dateToInput" type="hidden"><input id="dateInput" type="hidden"><input id="daysInput" type="hidden"></div><div class="form-field"><label>Total Number of Days</label><div id="daysDisplay" class="auto-value placeholder">يحسب تلقائيًا</div></div><div class="form-field"><label for="fieldInput">Field</label><input id="fieldInput" type="text" placeholder="Example: Yibal"></div><div class="form-field"><label for="wellInput">Well</label><input id="wellInput" type="text" placeholder="Example: UF-33"></div><div class="form-field"><label for="hoistInput">Hoist / Rig</label><input id="hoistInput" type="text" placeholder="Example: H-65 or R-65"></div></div><div id="validationHint" class="validation-hint"></div></div><div class="form-section" id="section-items"><h3>الأغراض / Items & Tools</h3><div id="itemsDisplay" class="select-card placeholder" onclick="openItemsModal()"><div class="items-display-title">اضغط لإضافة الأغراض</div><div class="items-display-sub">Select saved Description or use Manual Entry for anything not listed.</div></div><div id="itemsSummary" class="items-summary">No items added yet.</div></div><div class="form-section" id="section-signatures"><h3>المهندسين / Engineers</h3><div class="form-grid"><div class="form-field"><label>BIW Engineer</label><div id="biwEngineerDisplay" class="select-card placeholder" onclick="openEngineerModal()">اضغط لاختيار BIW Engineer</div></div><div class="form-field"><label for="espEngineerInput">ESP Engineer Name</label><input id="espEngineerInput" type="text" placeholder="اكتب اسم ESP Engineer"></div></div></div><div class="form-actions"><button class="btn btn-primary" type="button" onclick="downloadPDF()">Download PDF</button><button class="btn btn-secondary" type="button" onclick="sharePDF()">Share PDF</button></div><div id="pdfStatus" class="status-text"></div></div></div>
@@ -1510,6 +1539,112 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
   });
 
   setTimeout(cleanThemeButtons, 500);
+})();
+</script>
+
+
+<script>
+/* ===== v17 FINAL PDF ITEMS ROW SPACING FIX ONLY ===== */
+(function(){
+  const previousUpdateReportV17 = window.updateReport;
+  const previousCreatePdfBlobV17 = window.createPdfBlob;
+  const IM_VALUE_V17 = "A400-0405 REV";
+
+  function escapePdfItem(v){
+    return String(v ?? "").replace(/[&<>"']/g, function(ch){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch];
+    });
+  }
+
+  function getItemsRowsV17(){
+    if(Array.isArray(window.TS_ITEMS_FINAL) && window.TS_ITEMS_FINAL.length){
+      return window.TS_ITEMS_FINAL;
+    }
+    try{
+      if(Array.isArray(savedItemRows) && savedItemRows.length){
+        return savedItemRows;
+      }
+    }catch(e){}
+    if(Array.isArray(window.savedItemRows) && window.savedItemRows.length){
+      return window.savedItemRows;
+    }
+    return [];
+  }
+
+  function makeItemBlock(value, alignClass){
+    return '<div class="ts-pdf-item-row ' + alignClass + '">' + escapePdfItem(value || "") + '</div>';
+  }
+
+  function applyFinalPdfItemsSpacingV17(){
+    const rows = getItemsRowsV17().filter(function(row){
+      if(!row) return false;
+      return ["qty","desc","part","serial"].some(function(k){
+        return String(row[k] || "").trim();
+      });
+    });
+
+    const qty = [];
+    const desc = [];
+    const part = [];
+    const manual = [];
+    const serial = [];
+
+    rows.forEach(function(row, index){
+      qty.push(makeItemBlock(row.qty || "", "ts-center"));
+      desc.push(makeItemBlock(row.desc || "", "ts-left"));
+      part.push(makeItemBlock(row.part || "", "ts-center"));
+      manual.push(makeItemBlock(index === 0 ? IM_VALUE_V17 : "", "ts-center"));
+      serial.push(makeItemBlock(row.serialRequired === false ? "N/A" : (row.serial || ""), "ts-center"));
+    });
+
+    const map = {
+      outQty: qty.join(""),
+      outDesc: desc.join(""),
+      outPart: part.join(""),
+      outManual: manual.join(""),
+      outSerial: serial.join("")
+    };
+
+    Object.keys(map).forEach(function(id){
+      const el = document.getElementById(id);
+      if(el) el.innerHTML = map[id];
+    });
+  }
+
+  window.updateReport = function(){
+    if(typeof previousUpdateReportV17 === "function"){
+      previousUpdateReportV17();
+    }
+    applyFinalPdfItemsSpacingV17();
+  };
+
+  window.createPdfBlob = async function(){
+    window.updateReport();
+    applyFinalPdfItemsSpacingV17();
+
+    const report = document.getElementById("reportPage");
+    if(report) report.offsetHeight;
+
+    await new Promise(function(resolve){
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          applyFinalPdfItemsSpacingV17();
+          resolve();
+        });
+      });
+    });
+
+    if(typeof previousCreatePdfBlobV17 === "function"){
+      return await previousCreatePdfBlobV17();
+    }
+    throw new Error("PDF generator is not available.");
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setTimeout(function(){
+      try{ applyFinalPdfItemsSpacingV17(); }catch(e){}
+    }, 400);
+  });
 })();
 </script>
 
