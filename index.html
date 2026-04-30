@@ -367,16 +367,26 @@ body.ui-night .serial-status-warn{
 #reportPage .ts-clean-items-table td{
   border:0 !important;
   vertical-align:top !important;
-  padding:3px 5px !important;
+  padding:1.5px 5px !important;
   font-weight:bold !important;
-  line-height:1.14 !important;
+  line-height:1.08 !important;
   word-break:break-word !important;
   overflow-wrap:anywhere !important;
   white-space:normal !important;
   color:#000 !important;
   overflow:visible !important;
 }
-#reportPage .ts-clean-items-table tr{border:0 !important;}
+#reportPage .ts-clean-items-table tr{
+  border:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+}
+#reportPage .items-table .ts-clean-items-table td,
+#reportPage .ts-clean-items-table td{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
 #reportPage .ts-clean-items-table .c-qty{width:15%;text-align:center!important;}
 #reportPage .ts-clean-items-table .c-desc{width:33%;text-align:left!important;}
 #reportPage .ts-clean-items-table .c-part{width:19%;text-align:center!important;}
