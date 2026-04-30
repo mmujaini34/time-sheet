@@ -349,19 +349,21 @@ body.ui-night .serial-status-warn{
 
 
 
-/* ===== CLEAN PDF ITEMS ENGINE - FULL VERTICAL LINES + STRONG SMART AUTOFIT ===== */
+/* ===== CLEAN PDF ITEMS ENGINE - SINGLE FULL VERTICAL LINES + NICE FLEX FONT ===== */
 #reportPage #tsItemsCleanRow > td{
   height:360px !important;
-  padding:6px 7px !important;
+  padding:7px 8px !important;
   border:2px solid #000 !important;
   vertical-align:top !important;
   overflow:hidden !important;
   position:relative !important;
+  background-color:#fff !important;
+  /* خطوط طولية مرة واحدة فقط، ممتدة كامل مساحة الـ Items */
   background-image:
-    linear-gradient(to right, transparent calc(15% - 1px), #000 calc(15% - 1px), #000 calc(15% + 1px), transparent calc(15% + 1px)),
-    linear-gradient(to right, transparent calc(48% - 1px), #000 calc(48% - 1px), #000 calc(48% + 1px), transparent calc(48% + 1px)),
-    linear-gradient(to right, transparent calc(67% - 1px), #000 calc(67% - 1px), #000 calc(67% + 1px), transparent calc(67% + 1px)),
-    linear-gradient(to right, transparent calc(84% - 1px), #000 calc(84% - 1px), #000 calc(84% + 1px), transparent calc(84% + 1px));
+    linear-gradient(to right, transparent calc(15% - .5px), #000 calc(15% - .5px), #000 calc(15% + .5px), transparent calc(15% + .5px)),
+    linear-gradient(to right, transparent calc(48% - .5px), #000 calc(48% - .5px), #000 calc(48% + .5px), transparent calc(48% + .5px)),
+    linear-gradient(to right, transparent calc(67% - .5px), #000 calc(67% - .5px), #000 calc(67% + .5px), transparent calc(67% + .5px)),
+    linear-gradient(to right, transparent calc(84% - .5px), #000 calc(84% - .5px), #000 calc(84% + .5px), transparent calc(84% + .5px));
   background-repeat:no-repeat !important;
   background-size:100% 100% !important;
 }
@@ -372,13 +374,15 @@ body.ui-night .serial-status-warn{
   table-layout:fixed !important;
   margin:0 !important;
   background:transparent !important;
+  position:relative !important;
+  z-index:1 !important;
 }
 #reportPage .ts-clean-items-table td{
   border:0 !important;
   vertical-align:top !important;
-  padding:1.5px 6px !important;
+  padding:2px 7px !important;
   font-weight:bold !important;
-  line-height:1.12 !important;
+  line-height:1.14 !important;
   word-break:normal !important;
   overflow-wrap:anywhere !important;
   white-space:normal !important;
@@ -386,16 +390,23 @@ body.ui-night .serial-status-warn{
   overflow:visible !important;
   background:transparent !important;
 }
-#reportPage .ts-clean-items-table td + td{ border-left:0 !important; }
-#reportPage .ts-clean-items-table tr{ border:0 !important; height:auto !important; min-height:0 !important; }
+#reportPage .ts-clean-items-table tr{
+  border:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+}
 #reportPage .items-table .ts-clean-items-table td,
-#reportPage .ts-clean-items-table td{ height:auto !important; min-height:0 !important; max-height:none !important; }
+#reportPage .ts-clean-items-table td{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
 #reportPage .ts-clean-items-table .c-qty{width:15%;text-align:center!important;}
 #reportPage .ts-clean-items-table .c-desc{width:33%;text-align:left!important;}
 #reportPage .ts-clean-items-table .c-part{width:19%;text-align:center!important;}
 #reportPage .ts-clean-items-table .c-manual{width:17%;text-align:center!important;}
 #reportPage .ts-clean-items-table .c-serial{width:16%;text-align:center!important;}
-/* ===== end clean PDF items engine full vertical lines + strong smart autofit ===== */
+/* ===== end clean PDF items engine single vertical lines + nice flex font ===== */
 
 
 </style>
@@ -1540,29 +1551,29 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
     const maxText = lengths.length ? Math.max.apply(null, lengths) : 0;
 
     let size;
-    if(count <= 2) size = 16.4;
-    else if(count <= 3) size = 15.8;
-    else if(count <= 5) size = 14.7;
-    else if(count <= 7) size = 13.2;
-    else if(count <= 9) size = 11.9;
-    else if(count <= 12) size = 10.6;
-    else if(count <= 16) size = 9.2;
-    else size = 7.9;
+    if(count <= 2) size = 17.4;
+    else if(count <= 3) size = 16.8;
+    else if(count <= 5) size = 15.7;
+    else if(count <= 7) size = 14.2;
+    else if(count <= 9) size = 12.8;
+    else if(count <= 12) size = 11.4;
+    else if(count <= 16) size = 9.8;
+    else size = 8.4;
 
     if(maxText > 50) size -= .35;
     if(maxText > 75) size -= .45;
     if(maxText > 100) size -= .45;
     if(maxText > 130) size -= .35;
 
-    return Math.max(6.8, Math.min(16.6, size));
+    return Math.max(7.2, Math.min(17.6, size));
   }
 
   function lineFor(count){
-    if(count > 14) return 1.04;
-    if(count > 10) return 1.06;
-    if(count > 7) return 1.08;
-    if(count > 5) return 1.10;
-    return 1.16;
+    if(count > 14) return 1.05;
+    if(count > 10) return 1.07;
+    if(count > 7) return 1.09;
+    if(count > 5) return 1.11;
+    return 1.18;
   }
 
   function applyItemFont(table, size, line){
@@ -1580,16 +1591,16 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
     const maxHeight = Math.max(40, cell.clientHeight - 12);
     applyItemFont(table, size, line);
 
-    while(table.scrollHeight > maxHeight && size > 6.6){
+    while(table.scrollHeight > maxHeight && size > 7.0){
       size -= 0.35;
       line = Math.max(1.0, line - 0.01);
       applyItemFont(table, size, line);
     }
 
-    while(table.scrollHeight < maxHeight * 0.52 && size < 16.8){
+    while(table.scrollHeight < maxHeight * 0.48 && size < 17.6){
       size += 0.35;
       applyItemFont(table, size, line);
-      if(table.scrollHeight > maxHeight * 0.62){
+      if(table.scrollHeight > maxHeight * 0.58){
         size -= 0.35;
         applyItemFont(table, size, line);
         break;
