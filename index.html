@@ -357,13 +357,13 @@ body.ui-night .serial-status-warn{
   vertical-align:top !important;
   overflow:hidden !important;
   position:relative !important;
-  background:#fff !important;
+  background-color:#fff !important;
 }
 #reportPage #tsItemsCleanRow > td .ts-items-vline{
   position:absolute !important;
   top:0 !important;
   bottom:0 !important;
-  width:2px !important;
+  width:1.6px !important;
   background:#000 !important;
   z-index:0 !important;
   pointer-events:none !important;
@@ -372,6 +372,45 @@ body.ui-night .serial-status-warn{
 #reportPage #tsItemsCleanRow > td .ts-v2{left:48% !important;}
 #reportPage #tsItemsCleanRow > td .ts-v3{left:67% !important;}
 #reportPage #tsItemsCleanRow > td .ts-v4{left:84% !important;}
+#reportPage .ts-clean-items-table{
+  width:100% !important;
+  height:auto !important;
+  border-collapse:collapse !important;
+  table-layout:fixed !important;
+  margin:0 !important;
+  background:transparent !important;
+  position:relative !important;
+  z-index:1 !important;
+}
+#reportPage .ts-clean-items-table td{
+  border:0 !important;
+  vertical-align:top !important;
+  padding:2px 7px !important;
+  font-weight:bold !important;
+  line-height:1.14 !important;
+  word-break:normal !important;
+  overflow-wrap:anywhere !important;
+  white-space:normal !important;
+  color:#000 !important;
+  overflow:visible !important;
+  background:transparent !important;
+}
+#reportPage .ts-clean-items-table tr{
+  border:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+}
+#reportPage .items-table .ts-clean-items-table td,
+#reportPage .ts-clean-items-table td{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+#reportPage .ts-clean-items-table .c-qty{width:15%;text-align:center!important;}
+#reportPage .ts-clean-items-table .c-desc{width:33%;text-align:left!important;}
+#reportPage .ts-clean-items-table .c-part{width:19%;text-align:center!important;}
+#reportPage .ts-clean-items-table .c-manual{width:17%;text-align:center!important;}
+#reportPage .ts-clean-items-table .c-serial{width:16%;text-align:center!important;}
 /* ===== end clean PDF items engine single vertical lines + nice flex font ===== */
 
 
@@ -1609,7 +1648,7 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
     cleanRow.id = ROW_ID;
     const cell = document.createElement("td");
     cell.colSpan = 5;
-    cell.innerHTML = '<span class="ts-items-vline ts-v1"></span><span class="ts-items-vline ts-v2"></span><span class="ts-items-vline ts-v3"></span><span class="ts-items-vline ts-v4"></span><table class="ts-clean-items-table"><tbody>' + htmlRows + '</tbody></table>';
+    cell.innerHTML = '<div class="ts-items-vline ts-v1"></div><div class="ts-items-vline ts-v2"></div><div class="ts-items-vline ts-v3"></div><div class="ts-items-vline ts-v4"></div><table class="ts-clean-items-table"><tbody>' + htmlRows + '</tbody></table>';
     cleanRow.appendChild(cell);
 
     originalRow.parentNode.insertBefore(cleanRow, originalRow.nextSibling);
