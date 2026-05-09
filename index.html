@@ -1783,6 +1783,55 @@ const SAVED_ITEMS=[{"desc":"UNI-LOK PRESSURE BLOCK ASSY 5000PSI","part":"ULK55-0
 })();
 /* ===== end v27 pdf file name from well only ===== */
 
+
+
+/* ===== v29 PRINT SAFE PDF MARGIN - SCALE CONTENT ONLY ===== */
+(function(){
+  "use strict";
+
+  const OLD_CREATE_PDF_BLOB = window.createPdfBlob;
+  if(typeof OLD_CREATE_PDF_BLOB === "function" && !window.__v29PrintSafePdfMargin){
+    window.__v29PrintSafePdfMargin = true;
+
+    window.createPdfBlob = async function(){
+      if(typeof updateReport === "function") updateReport();
+
+      document.body.classList.add("generating-pdf");
+      await new Promise(resolve => setTimeout(resolve, 260));
+
+      const target = document.getElementById("reportPage");
+      const canvas = await html2canvas(target, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
+        logging: false
+      });
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "pt", "a4");
+
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+
+      /* 96% gives safe printer margin without changing the report layout itself */
+      const safeScale = 0.96;
+      const imgW = pageW * safeScale;
+      const imgH = pageH * safeScale;
+      const x = (pageW - imgW) / 2;
+      const y = (pageH - imgH) / 2;
+
+      pdf.addImage(canvas.toDataURL("image/jpeg", 0.98), "JPEG", x, y, imgW, imgH);
+
+      document.body.classList.remove("generating-pdf");
+      return pdf.output("blob");
+    };
+  }
+
+  console.log("v29 loaded: PDF content scaled to 96% and centered for safer printing.");
+})();
+/* ===== end v29 print safe pdf margin ===== */
+
 </script>
 
 </body></html>
